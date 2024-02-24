@@ -1,9 +1,17 @@
-import React from "react";
-import logo from "./logo.svg";
+import LoginPage from "./Components/LoginPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 function App() {
-  return <div className="App">Hello</div>;
+  return (
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
