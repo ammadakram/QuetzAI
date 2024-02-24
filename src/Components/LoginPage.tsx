@@ -4,6 +4,7 @@ function loginPage() {
       <div className="left-div">
         <div className="animation-div">
           <p>animation hogaya.</p>
+          <p>animation hogaya.</p>
         </div>
       </div>
       <div className="right-div">
