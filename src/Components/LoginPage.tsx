@@ -3,12 +3,12 @@ function loginPage() {
     <div className="app">
       <div className="left-div">
         <div className="animation-div">
-          <p>My animation goes here.</p>
+          <p>animation hogaya.</p>
         </div>
       </div>
       <div className="right-div">
         <div className="login-div">
-          <p>My login goes here.</p>
+          <p>samajh lo hogaya</p>
           <button className="login-button">Login</button>
           <button className="signup-button">Sign Up</button>
         </div>
