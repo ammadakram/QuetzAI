@@ -22,10 +22,19 @@ function SignupPage() {
         <div className="line"></div>
       </div>
       <div className="social-login-boxes">
-        <a href="#" className="social-login-box google-box">Continue with Google</a>
-        <a href="#" className="social-login-box microsoft-box">Continue with Microsoft</a>
-        <a href="#" className="social-login-box facebook-box">Continue with Facebook</a>
-      </div>
+        <a href="#" className="social-login-box google-box">
+          <img src="./google_logo.png" alt="Google Logo" className="google-login-logo" />
+          Log in with Google
+        </a>
+        <a href="#" className="social-login-box microsoft-box">
+          <img src="./Microsoft_icon.svg.png" alt="Microsoft Logo" className="microsoft-login-logo" />
+          Log in with Microsoft
+        </a>
+        <a href="#" className="social-login-box facebook-box">
+          <img src="./facebook_logo.webp" alt="Facebook Logo" className="facebook-login-logo" />
+          Log in with Facebook
+        </a>
+        </div>
     </div>
   );
 }
