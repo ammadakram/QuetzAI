@@ -137,19 +137,7 @@
   background-color: #f0f0f0; /* Change background color on hover */
 }
 
-.microsoft-login-logo{
-  width: 22px; /* Change width as needed */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 10px;
-}
-
-.google-login-logo{
-  width: 22px; /* Change width as needed */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 10px;
-}
-
-.facebook-login-logo{
+.login-logo{
   width: 22px; /* Change width as needed */
   height: auto; /* Maintain aspect ratio */
   margin-right: 10px;
