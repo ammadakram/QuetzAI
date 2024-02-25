@@ -2,22 +2,3 @@
   display: flex;
   justify-content: flex-end;
 }
-
-.left-div {
-  width: 75vw;
-  height: 100vh;
-  background-color: rgb(39, 55, 77);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.right-div {
-  width: 25vw; /* Or any specific width */
-  height: 100vh;
-  display: flex;
-  margin-left: auto;
-  background-color: rgb(0, 0, 0);
-  justify-content: center;
-  align-items: center;
-}

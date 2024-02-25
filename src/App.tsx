@@ -1,6 +1,6 @@
-import LoginPage from "./Components/LoginPage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
+import LoginPage from './Components/LoginPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 
 function App() {
   return (
