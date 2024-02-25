@@ -29,7 +29,7 @@
   color: hsl(0, 0%, 0%); /* Adjust color as needed */
 }
 
-.email-box {
+.email-input {
   display : flex;
   align-items: center;
   justify-content: space-between;
@@ -44,12 +44,11 @@
   border-radius: 8px; /* Add border radius */
 }
 
-.email-box input {
-  width: calc(100% + 80px); /* Adjust width to fill the entire email box */
-  padding: 20px;
-  font-size: 20px;
-  border: none;
-  background: none;
+.email-input input {
+  width: calc(100% - 20px); /* Adjust width of input */
+  font-size: 20px; /* Adjust font size */
+  border: none; /* Remove border */
+  background: none; /* Remove background */
 }
 
 .next-box {

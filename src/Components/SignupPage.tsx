@@ -7,9 +7,8 @@ function SignupPage() {
         <img src="./QuetzAI_logo_Inverted.png" alt="Logo" />
       </div>
       <div className="create-account-text">create account</div>
-      <div className="email-box">
-        <input type="email" id="email" name="email" placeholder="email address" />
-      </div>
+
+      <input type="email" id="email" name="email" placeholder="email address" className="email-input" />
       <div className="next-box">
         next
       </div>
