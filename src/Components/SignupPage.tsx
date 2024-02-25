@@ -6,12 +6,12 @@ function SignupPage() {
       <div className="logo">
         <img src="./QuetzAI_logo_Inverted.png" alt="Logo" />
       </div>
-      <div className="create-account-text">Create Account</div>
+      <div className="create-account-text">create account</div>
       <div className="email-box">
-        <input type="email" id="email" name="email" placeholder="Email Address" />
+        <input type="email" id="email" name="email" placeholder="email address" />
       </div>
       <div className="next-box">
-        Next
+        next
       </div>
       <div className="login-text">
         Already have an account? <a href="#">Log in</a>
