@@ -147,20 +147,20 @@
 }
 
 .social-login-box {
-  width: 318px; /* Adjust width as needed */
-  height: 52px; /* Adjust height as needed */
-  margin-bottom: 15px; /* Add margin between boxes */
-  display: flex; /* Use flexbox */
-  align-items: center; /* Center vertically */
+  width: 318px;
+  height: 52px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
   border: 1px solid #ccc;
-  border-radius: 8px; /* Add border radius */
-  background-color: white; /* Set background color to white */
-  text-decoration: none; /* Remove default anchor text decoration */
+  border-radius: 8px;
+  background-color: white;
+  text-decoration: none;
   color: #27374d;
 }
 
 .social-login-box:hover {
-  background-color: #f0f0f0; /* Change background color on hover */
+  background-color: #f0f0f0;
 }
 
 .login-logo {

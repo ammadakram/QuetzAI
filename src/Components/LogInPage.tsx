@@ -8,7 +8,7 @@ function LogInPage() {
   const [enteredEmail, setEnteredEmail] = useState('');
 
   const keyPressed = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key == 'Enter') {
+    if (event.key === 'Enter') {
       goToLoginPassword();
     }
   };
