@@ -68,7 +68,7 @@ function LogInPage() {
               />
               Continue with Google
             </a>
-            {/* <a href="#" className="social-login-box microsoft-box">
+            <a href="#" className="social-login-box microsoft-box">
               <img
                 src="./Microsoft_icon.svg.png"
                 alt="Microsoft Logo"
@@ -83,7 +83,7 @@ function LogInPage() {
                 className="login-logo"
               />
               Continue with Facebook
-            </a> */}
+            </a>
           </div>
         </section>
       </div>
