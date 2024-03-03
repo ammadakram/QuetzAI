@@ -1,0 +1,60 @@
+.home-page {
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  background-color: #1a2e49;
+  height: 100vh;
+}
+
+.logo {
+  height: auto;
+  width: auto;
+  align-self: center;
+  align-items: center;
+}
+
+.logo img {
+  width: 140px;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2%;
+  height: 100%;
+}
+
+.file-upload-box {
+  text-align: center;
+  font-size: 40px;
+  cursor: pointer;
+  color: #9db2bf;
+  border: 2px dashed #9db2bf;
+  padding: 100px 80px 100px 80px;
+  display: block;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.file-upload-box input[type='file'] {
+  display: none;
+}
+
+.recent-conversations {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  margin-bottom: 10%;
+}
+
+.recent-conversation {
+  width: 18%;
+  height: 240%;
+  border-radius: 6px;
+  background-color: #9db2bf;
+  font-size: 18px;
+  padding-left: 10px;
+  cursor: pointer;
+}

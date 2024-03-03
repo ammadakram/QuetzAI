@@ -1,31 +1,34 @@
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import "./LogInPage.css";
-import "./LogInPassword.css";
-import { useState } from "react";
-import { auth } from "../firebase-config";
-import { signInWithEmailAndPassword } from "@firebase/auth";
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import './LogInPage.css';
+import './LogInPassword.css';
+import { useState } from 'react';
+import { auth } from '../firebase-config';
+import { signInWithEmailAndPassword } from '@firebase/auth';
 
 function LogInPassword() {
   const location = useLocation();
-  const email = location.state?.email;
-  const [password, setPassword] = useState("");
+  const userEmail = location.state?.email;
+
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
   const signInExistingUser = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, userEmail, password);
     } catch (err) {
       console.error(err);
     }
   };
+
   const keyPressed = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key == "Enter") {
+    if (event.key == 'Enter') {
       signInExistingUser();
     }
   };
 
   return (
-    <div className="LogInPage">
+    <div className="login-page">
       <div className="logo">
         <img src="./QuetzAI_logo_Inverted.png" alt="Logo" />
       </div>
@@ -34,8 +37,8 @@ function LogInPassword() {
         <section className="container-wrapper">
           {/* <div className="welcome-box-text">Welcome back</div> */}
 
-          <div className="welcome-box">
-            <h1 className="welcome-text">Enter your password</h1>
+          <div className="title-box">
+            <h1 className="title-text">Enter your password</h1>
           </div>
 
           <div className="email-wrapper">
@@ -43,7 +46,7 @@ function LogInPassword() {
               className="email-input"
               type="email"
               name="email"
-              value={email}
+              value={userEmail}
               placeholder="email address"
             ></input>
           </div>
@@ -62,23 +65,22 @@ function LogInPassword() {
             ></input>
           </div>
 
-          <a className="forgot-password" href="">
+          <a
+            className="forgot-password"
+            onClick={() => {
+              navigate('/reset-password');
+            }}
+          >
             Forgot Password?
           </a>
 
-          <button className="continue-btn" onClick={signInExistingUser}>
+          <button className="continue-btn" onClick={() => {}}>
             Continue
           </button>
 
-          <p className="sign-up">Don't have an account? </p>
-          <a
-            className="sign-up-txt"
-            onClick={() => {
-              navigate("/signup");
-            }}
-          >
-            Sign Up
-          </a>
+          <p className="sign-up">
+            Don't have an account? <a className="sign-up-text">Sign Up</a>
+          </p>
 
           <div className="or-line">
             <div className="line"></div>
