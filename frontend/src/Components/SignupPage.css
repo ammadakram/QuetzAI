@@ -51,7 +51,7 @@
   background: none; /* Remove background */
 }
 
-.next-box {
+.next-btn {
   width: 300px;
   height: 40px; /* Adjust height as needed */
   background-color: #27374D; /* Background color */
@@ -78,9 +78,10 @@
   color: #000; /* Text color */
 }
 
-.login-text a {
+.log-in-txt {
+  cursor: pointer;
   font-size: 18px;
-  color: #27374D; /* Link color */
+  color: rgb(0, 0, 238);
 }
 
 .or-line {
