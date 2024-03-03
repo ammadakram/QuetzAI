@@ -1,4 +1,3 @@
-BACKEND 
 In the backend, we have a agent jupyter notebook which contains the logic for our Retrieval Augmented Generation Agent. This notebook will later be fecthed as a python file when we create endpoints with the server. 
 In order to use the agent simply follow these steps:
 1. Run the agent.ipynb notebook.
