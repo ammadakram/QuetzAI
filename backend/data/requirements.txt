@@ -1,0 +1,9 @@
+tiktoken
+pypdf
+faiss-cpu
+langchain
+langchain_openai
+pydantic
+typing
+langchainhub
+google-search-results
