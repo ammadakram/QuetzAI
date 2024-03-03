@@ -1,0 +1,143 @@
+.SignupPage {
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column; /* Arrange children vertically */
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  height: 100vh; /* Set height to fill the entire viewport */
+}
+
+.logo {
+  margin-bottom: auto; /* Pushes the logo to the top */
+}
+
+.logo img {
+  width : 100px;
+  height : auto;
+}
+
+.SignupPage-txt {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px; /* Adjust font size as needed */
+}
+
+.create-account-text {
+  font-family: 'Inter', sans-serif;
+  position: absolute;
+  top: 15%; /* Position the text at 80% from the top */
+  font-size: 35px; /* Adjust font size as needed */
+  color: hsl(0, 0%, 0%); /* Adjust color as needed */
+}
+
+.email-input {
+  display : flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 25%; /* Position the box at 30% from the top */
+  width: 250px; /* Adjust width as needed */
+  height: 15px;
+  margin: 0 auto; /* Center horizontally */
+  background-color: #fff; /* Add background color */
+  padding: 20px; /* Add padding */
+  border: 2px solid #ccc; /* Add border */
+  border-radius: 8px; /* Add border radius */
+}
+
+.email-input input {
+  width: calc(100% - 20px); /* Adjust width of input */
+  font-size: 20px; /* Adjust font size */
+  border: none; /* Remove border */
+  background: none; /* Remove background */
+}
+
+.next-box {
+  width: 300px;
+  height: 40px; /* Adjust height as needed */
+  background-color: #27374D; /* Background color */
+  color: white; /* Text color */
+  display: flex; /* Use flexbox */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  border-radius: 8px;
+  position: absolute; /* Position absolutely */
+  top: 40%; /* Position at the top 35% of the page */
+  left: 50%; /* Align horizontally at the center */
+  transform: translateX(-50%); /* Adjust horizontal alignment */
+  margin-top: -25px; /* Offset half of the box height for proper alignment */
+  font-size: 20px;
+  cursor: pointer; /* Add pointer cursor on hover */
+}
+
+.login-text {
+  position: absolute; /* Position absolutely */
+  top: 46%; /* Position at the top 45% of the page */
+  left: 50%; /* Align horizontally at the center */
+  transform: translateX(-50%); /* Adjust horizontal alignment */
+  font-size: 18px;
+  color: #000; /* Text color */
+}
+
+.login-text a {
+  font-size: 18px;
+  color: #27374D; /* Link color */
+}
+
+.or-line {
+  width: 300px;
+  position: absolute; /* Position absolutely */
+  top: 53%; /* Position at the top 50% of the page */
+  left: 50%; /* Align horizontally at the center */
+  transform: translateX(-50%); /* Adjust horizontal alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: #ccc; /* Line color */
+}
+
+.or-box {
+  padding: 0 10px;
+  background-color: #f9f9f9; /* Box background color */
+  color: #27374D; /* Box text color */
+  font-weight: bold; /* Box text weight */
+}
+
+.social-login-boxes {
+  width: 300px;
+  position: absolute; /* Position absolutely */
+  top: 60%; /* Position at the top 70% of the page */
+  left: 50%; /* Align horizontally at the center */
+  transform: translateX(-50%); /* Adjust horizontal alignment */
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack boxes vertically */
+  align-items: center; /* Center horizontally */
+}
+
+.social-login-box {
+  width: 300px; /* Adjust width as needed */
+  height: 50px; /* Adjust height as needed */
+  margin-bottom: 10px; /* Add margin between boxes */
+  display: flex; /* Use flexbox */
+  align-items: center; /* Center vertically */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 8px; /* Add border radius */
+  background-color: white; /* Set background color to white */
+  text-decoration: none; /* Remove default anchor text decoration */
+  color: #27374D; /* Set text color */
+  padding-left: 10px; /* Add left padding for text alignment */
+}
+
+.social-login-box:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+}
+
+.login-logo{
+  width: 22px; /* Change width as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 10px;
+}
