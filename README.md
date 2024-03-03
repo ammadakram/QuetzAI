@@ -1,6 +1,6 @@
 # BACKEND
 In the backend, we have a agent jupyter notebook which contains the logic for our Retrieval Augmented Generation Agent. This notebook will later be fecthed as a python file when we create endpoints with the server. 
-<span style="font-size: 20px;">In order to use the agent simply follow these steps:</span>
+<span style="font-size:18px;"> In order to use the agent simply follow these steps:</span>
 1. Run the agent.ipynb notebook.
 2. Call the establish_retriever function with a string path to a locally stored PDF file on your device. This file will become the knowledge base of the model. 
 3. Call the infer function with your query string as an argument.
