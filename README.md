@@ -1,12 +1,12 @@
-<span style="font-size:18px;"> BACKEND </span> <br>
+# BACKEND
 In the backend, we have a agent jupyter notebook which contains the logic for our Retrieval Augmented Generation Agent. This notebook will later be fecthed as a python file when we create endpoints with the server. 
-In order to use the agent simply follow these steps:
+<span style="font-size: 20px;">In order to use the agent simply follow these steps:</span>
 1. Run the agent.ipynb notebook.
 2. Call the establish_retriever function with a string path to a locally stored PDF file on your device. This file will become the knowledge base of the model. 
 3. Call the infer function with your query string as an argument.
 4. Chat with the RAG agent like you would with any ohter agent (for example ChatGPT).
 
-In order to process a user query, our agent follows these steps:
+<span style="font-size: 20px;"> In order to process a user query, our agent follows these steps: </span>
 1. First the retriever setup breaks the PDF file into chunks, which are stored as OpenAI Word Embeddings. We store these embeddings in the FAISS Vector Database and return its retriever module.
 2. User passes a query to the agent.
 3. The agent routes this query across its 3 tools:
