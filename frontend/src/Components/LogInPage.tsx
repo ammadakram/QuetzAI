@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './LogInPage.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./LogInPage.css";
 
 function LogInPage() {
   const navigate = useNavigate();
 
-  const [enteredEmail, setEnteredEmail] = useState('');
+  const [enteredEmail, setEnteredEmail] = useState("");
 
   const keyPressed = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key == 'Enter') {
+    if (event.key == "Enter") {
       goToLoginPassword();
     }
   };
 
   const goToLoginPassword = () => {
-    navigate('/auth', { state: { email: enteredEmail } });
+    navigate("/auth", { state: { email: enteredEmail } });
   };
 
   return (
@@ -37,7 +37,10 @@ function LogInPage() {
               type="email"
               name="email"
               placeholder="email address"
-              onChange={(event) => setEnteredEmail(event.target.value)}
+              onChange={(event) => {
+                event.preventDefault();
+                setEnteredEmail(event.target.value);
+              }}
               onKeyDown={keyPressed}
             ></input>
           </div>
@@ -47,11 +50,16 @@ function LogInPage() {
           </button>
 
           <p className="sign-up">
-            Don't have an account?{' '}
-            <a className="sign-up-text" href="">
-              Sign Up
-            </a>
+            <span>Don't have an account? </span>
           </p>
+          <a
+            className="sign-up-txt"
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            Sign Up
+          </a>
 
           <div className="or-line">
             <div className="line"></div>

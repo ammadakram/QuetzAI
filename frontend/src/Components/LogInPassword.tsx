@@ -1,10 +1,28 @@
-import { useLocation } from 'react-router-dom';
-import './LogInPage.css';
-import './LogInPassword.css';
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "./LogInPage.css";
+import "./LogInPassword.css";
+import { useState } from "react";
+import { auth } from "../firebase-config";
+import { signInWithEmailAndPassword } from "@firebase/auth";
 
 function LogInPassword() {
   const location = useLocation();
   const email = location.state?.email;
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const signInExistingUser = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const keyPressed = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key == "Enter") {
+      signInExistingUser();
+    }
+  };
 
   return (
     <div className="LogInPage">
@@ -36,6 +54,11 @@ function LogInPassword() {
               type="password"
               name="password"
               placeholder="password"
+              onChange={(event) => {
+                event.preventDefault();
+                setPassword(event.target.value);
+              }}
+              onKeyDown={keyPressed}
             ></input>
           </div>
 
@@ -43,14 +66,19 @@ function LogInPassword() {
             Forgot Password?
           </a>
 
-          <button className="continue-btn">Continue</button>
+          <button className="continue-btn" onClick={signInExistingUser}>
+            Continue
+          </button>
 
-          <p className="sign-up">
-            Don't have an account?{' '}
-            <a className="sign-up-text" href="">
-              Sign Up
-            </a>
-          </p>
+          <p className="sign-up">Don't have an account? </p>
+          <a
+            className="sign-up-txt"
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            Sign Up
+          </a>
 
           <div className="or-line">
             <div className="line"></div>

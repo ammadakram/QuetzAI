@@ -102,20 +102,20 @@
   cursor: pointer;
 }
 
+.sign-up-txt {
+  cursor: pointer;
+  color: rgb(0, 0, 238);
+}
+
 .continue-btn:hover {
   background-color: #2e435f;
 }
 
 .sign-up {
+  display: flex;
+  align-items: center;
   font-size: 17px;
   margin-bottom: 0;
-}
-
-.sign-up-text {
-  text-decoration: none;
-  color: #27374d;
-  font-size: 17px;
-  font-weight: 500;
 }
 
 .or-line {
