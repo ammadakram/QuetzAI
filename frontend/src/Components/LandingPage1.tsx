@@ -28,7 +28,7 @@ function LandingPage() {
           <button
             className="signup-btn"
             onClick={() => {
-              navigate("/login");
+              navigate("/signup");
             }}
           >
             Sign Up
