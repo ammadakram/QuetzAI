@@ -1,14 +1,18 @@
 import "./SignupPage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { useState } from "react";
 
 function SignupPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const maybeEmail = location.state?.email;
-  console.log("My maybe email is: ", maybeEmail);
+  const provider = new GoogleAuthProvider();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayPass, setDisplayPass] = useState(false);
@@ -16,6 +20,15 @@ function SignupPage() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (err) {
+      // Add error handling here.
+      console.error(err);
+    }
+  };
+  const signUpWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      // Add error handling here.
       console.error(err);
     }
   };
@@ -24,12 +37,9 @@ function SignupPage() {
     from: string
   ) => {
     if (event.key === "Enter" && from === "email") {
-      console.log("Set display pass to true!");
       setDisplayPass(true);
-      console.log(displayPass);
     }
     if (event.key === "Enter" && from === "password") {
-      console.log(`Should create a user with ${email} and ${password}`);
       signUpWithEmailAndPassword();
     }
   };
@@ -92,7 +102,11 @@ function SignupPage() {
         <div className="line"></div>
       </div>
       <div className="social-login-boxes">
-        <a href="#" className="social-login-box google-box">
+        <a
+          href="#"
+          className="social-login-box google-box"
+          onClick={signUpWithGoogle}
+        >
           <img
             src="./google_logo.png"
             alt="Google Logo"
