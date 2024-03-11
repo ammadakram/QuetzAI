@@ -49,6 +49,21 @@
   box-sizing: content-box;
 }
 
+.password-input {
+  appearance: none;
+  border: 1px solid #c2c8d0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 17px;
+  height: 52px;
+  line-height: 1.1;
+  outline: none;
+  padding-block: 1px;
+  padding-inline: 2px;
+  padding: 0 16px;
+  width: 100%;
+}
+
 .title-box {
   border-top: 0;
   padding: 40px 40px 24px;

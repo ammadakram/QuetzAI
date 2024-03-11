@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import LogInPage from "./Components/LogInPage";
-import LogInPassword from "./Components/LogInPassword";
 import LandingPage from "./Components/LandingPage1";
 import HomePage from "./Components/HomePage";
 import ForgotPassword from "./Components/ForgotPassword";
@@ -17,7 +16,7 @@ function App() {
           {/* <Route path="/" element={<LandingPage />} /> */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LogInPage />} />
-          <Route path="/auth" element={<LogInPassword />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/reset-password" element={<ForgotPassword />} />
         </Routes>
       </Router>

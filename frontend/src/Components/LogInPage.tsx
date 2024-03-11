@@ -1,20 +1,45 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './LogInPage.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./LogInPage.css";
+import { auth } from "../firebase-config";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "@firebase/auth";
 
 function LogInPage() {
   const navigate = useNavigate();
-
-  const [enteredEmail, setEnteredEmail] = useState('');
-
-  const keyPressed = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      goToLoginPassword();
+  const provider = new GoogleAuthProvider();
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [displayPass, setDisplayPass] = useState(false);
+  const signInExistingUser = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, enteredEmail, password);
+    } catch (err) {
+      // Add error handling here.
+      console.error(err);
+    }
+  };
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      // Add error handling here.
+      console.error(err);
     }
   };
 
-  const goToLoginPassword = () => {
-    navigate('/auth', { state: { email: enteredEmail } });
+  const keyPressed = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    source: string
+  ) => {
+    if (event.key === "Enter" && source === "password") {
+      signInExistingUser();
+    } else if (event.key === "Enter" && source === "email") {
+      setDisplayPass(true);
+    }
   };
 
   return (
@@ -39,11 +64,30 @@ function LogInPage() {
                 event.preventDefault();
                 setEnteredEmail(event.target.value);
               }}
-              onKeyDown={keyPressed}
+              onKeyDown={(event) => {
+                keyPressed(event, "email");
+              }}
             ></input>
           </div>
 
-          <button className="continue-btn" onClick={goToLoginPassword}>
+          {displayPass && (
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Please enter your password..."
+              className="password-input"
+              onChange={(event) => {
+                event.preventDefault();
+                setPassword(event.target.value);
+              }}
+              onKeyDown={(event) => {
+                keyPressed(event, "password");
+              }}
+            />
+          )}
+
+          <button className="continue-btn" onClick={signInExistingUser}>
             Continue
           </button>
 
@@ -53,7 +97,7 @@ function LogInPage() {
           <a
             className="sign-up-txt"
             onClick={() => {
-              navigate('/signup');
+              navigate("/signup");
             }}
           >
             Sign Up
@@ -66,7 +110,10 @@ function LogInPage() {
           </div>
 
           <div className="social-login-boxes">
-            <a className="social-login-box google-box">
+            <a
+              className="social-login-box google-box"
+              onClick={signInWithGoogle}
+            >
               <img
                 src="./google_logo.png"
                 alt="Google Logo"
