@@ -1,29 +1,42 @@
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import './LogInPage.css';
-import './LogInPassword.css';
-import { useState } from 'react';
-import { auth } from '../firebase-config';
-import { signInWithEmailAndPassword } from '@firebase/auth';
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "./LogInPage.css";
+import "./LogInPassword.css";
+import { useState } from "react";
+import { auth } from "../firebase-config";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "@firebase/auth";
 
 function LogInPassword() {
   const location = useLocation();
-  const userEmail = location.state?.email;
-
-  const [password, setPassword] = useState('');
+  const email = location.state?.email;
+  const provider = new GoogleAuthProvider();
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const signInExistingUser = async () => {
     try {
       await signInWithEmailAndPassword(auth, userEmail, password);
     } catch (err) {
+      // Add error handling here.
       console.error(err);
     }
   };
 
   const keyPressed = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key == 'Enter') {
+    if (event.key == "Enter") {
       signInExistingUser();
+    }
+  };
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      // Add error handling here.
+      console.error(err);
     }
   };
 
@@ -68,7 +81,7 @@ function LogInPassword() {
           <a
             className="forgot-password"
             onClick={() => {
-              navigate('/reset-password');
+              navigate("/reset-password");
             }}
           >
             Forgot Password?
@@ -89,7 +102,11 @@ function LogInPassword() {
           </div>
 
           <div className="social-login-boxes">
-            <a href="#" className="social-login-box google-box">
+            <a
+              href="#"
+              className="social-login-box google-box"
+              onClick={signInWithGoogle}
+            >
               <img
                 src="./google_logo.png"
                 alt="Google Logo"
