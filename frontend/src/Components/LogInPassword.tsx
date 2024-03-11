@@ -20,6 +20,7 @@ function LogInPassword() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
+      // Add error handling here.
       console.error(err);
     }
   };
@@ -32,6 +33,7 @@ function LogInPassword() {
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
+      // Add error handling here.
       console.error(err);
     }
   };

@@ -15,7 +15,9 @@ function SignupPage() {
   const provider = new GoogleAuthProvider();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [displayPass, setDisplayPass] = useState(false);
+  const [displayConfirmPass, setDisplayConfirm] = useState(false);
   const signUpWithEmailAndPassword = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -39,7 +41,15 @@ function SignupPage() {
     if (event.key === "Enter" && from === "email") {
       setDisplayPass(true);
     }
+    if (event.key === "Enter" && from === "password_first") {
+      setDisplayConfirm(true);
+    }
     if (event.key === "Enter" && from === "password") {
+      if (confirmPassword !== password) {
+        // Display some error here.
+        console.log("Passwords don't match!");
+        return;
+      }
       signUpWithEmailAndPassword();
     }
   };
@@ -49,41 +59,59 @@ function SignupPage() {
       <div className="logo">
         <img src="./QuetzAI_logo_Inverted.png" alt="Logo" />
       </div>
-      <div className="create-account-text">create account</div>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="Please enter your email address..."
-        className="email-input"
-        onChange={(event) => {
-          event.preventDefault();
-          setEmail(event.target.value);
-        }}
-        onKeyDown={(event) => {
-          keyPressed(event, "email");
-        }}
-      />
-      {displayPass && (
+      <div className="signup-container">
+        <div className="create-account-text">Create your account</div>
         <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="password"
-          className="password-input"
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Please enter your email address..."
+          className="email-input"
           onChange={(event) => {
             event.preventDefault();
-            setPassword(event.target.value);
+            setEmail(event.target.value);
           }}
           onKeyDown={(event) => {
-            keyPressed(event, "password");
+            keyPressed(event, "email");
           }}
         />
-      )}
-      <div className="next-box">
-        <button className="next-btn" onClick={signUpWithEmailAndPassword}>
-          Next
-        </button>
+        {displayPass && (
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Please enter your password..."
+            className="password-input"
+            onChange={(event) => {
+              event.preventDefault();
+              setPassword(event.target.value);
+            }}
+            onKeyDown={(event) => {
+              keyPressed(event, "password_first");
+            }}
+          />
+        )}
+        {displayConfirmPass && (
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Please confirm your password..."
+            className="password-input"
+            onChange={(event) => {
+              event.preventDefault();
+              setConfirmPassword(event.target.value);
+            }}
+            onKeyDown={(event) => {
+              keyPressed(event, "password");
+            }}
+          />
+        )}
+        <div className="next-box">
+          <button className="next-btn" onClick={signUpWithEmailAndPassword}>
+            Next
+          </button>
+        </div>
       </div>
       <div className="login-text">
         Already have an account?{" "}
