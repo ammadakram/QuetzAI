@@ -1,43 +1,56 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./LogInPage.css";
-import { auth } from "../firebase-config";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase-config';
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-} from "@firebase/auth";
+} from '@firebase/auth';
+import './LogInPage.css';
 
 function LogInPage() {
   const navigate = useNavigate();
+  // Creating a GoogleAuthProvider instance from firebase
   const provider = new GoogleAuthProvider();
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // State for entered email
+  const [enteredEmail, setEnteredEmail] = useState('');
+  // State for password
+  const [password, setPassword] = useState('');
+  // State to control display of password input
   const [displayPass, setDisplayPass] = useState(false);
+
+  // sign in existing user with email and password
   const signInExistingUser = async () => {
     try {
+      // Signing in with email and password
       await signInWithEmailAndPassword(auth, enteredEmail, password);
     } catch (err) {
-      // Add error handling here.
-      console.error(err);
-    }
-  };
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (err) {
-      // Add error handling here.
+      // Logging any errors that occur during sign-in
       console.error(err);
     }
   };
 
+  // sign in with Google
+  const signInWithGoogle = async () => {
+    try {
+      // Signing in with Google using popup
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      // Logging any errors that occur during sign-in with Google
+      console.error(err);
+    }
+  };
+
+  // handle key press events
   const keyPressed = (
     event: React.KeyboardEvent<HTMLInputElement>,
     source: string
   ) => {
-    if (event.key === "Enter" && source === "password") {
+    if (event.key === 'Enter' && source === 'password') {
+      // Call signInExistingUser function if Enter key pressed in password input
       signInExistingUser();
-    } else if (event.key === "Enter" && source === "email") {
+    } else if (event.key === 'Enter' && source === 'email') {
+      // Display password input if Enter key pressed in email input
       setDisplayPass(true);
     }
   };
@@ -47,13 +60,11 @@ function LogInPage() {
       <div className="logo">
         <img src="./QuetzAI_logo_Inverted.png" alt="Logo" />
       </div>
-
       <div className="login-container">
         <section className="container-wrapper">
           <div className="title-box">
             <h1 className="title-text">Welcome back</h1>
           </div>
-
           <div className="email-wrapper">
             <input
               className="email-input"
@@ -65,11 +76,12 @@ function LogInPage() {
                 setEnteredEmail(event.target.value);
               }}
               onKeyDown={(event) => {
-                keyPressed(event, "email");
+                // Call keyPressed function with email
+                keyPressed(event, 'email');
               }}
-            ></input>
+            ></input>{' '}
           </div>
-
+          {/* Display password input if user has enetered email */}
           {displayPass && (
             <input
               type="password"
@@ -82,33 +94,32 @@ function LogInPage() {
                 setPassword(event.target.value);
               }}
               onKeyDown={(event) => {
-                keyPressed(event, "password");
+                // call keyPressed function with password
+                keyPressed(event, 'password');
               }}
             />
           )}
-
           <button className="continue-btn" onClick={signInExistingUser}>
             Continue
-          </button>
-
+          </button>{' '}
+          {/* trigger sign-in with email and password */}
           <p className="sign-up">
             <span>Don't have an account? </span>
           </p>
           <a
             className="sign-up-txt"
             onClick={() => {
-              navigate("/signup");
+              // Navigate to the signup page
+              navigate('/signup');
             }}
           >
             Sign Up
           </a>
-
           <div className="or-line">
             <div className="line"></div>
             <div className="or-box">OR</div>
             <div className="line"></div>
           </div>
-
           <div className="social-login-boxes">
             <a
               className="social-login-box google-box"

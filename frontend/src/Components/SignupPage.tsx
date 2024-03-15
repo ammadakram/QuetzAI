@@ -1,28 +1,27 @@
-import "./SignupPage.css";
-import { useLocation, useNavigate } from "react-router-dom";
-import { auth } from "../firebase-config";
+import './SignupPage.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { auth } from '../firebase-config';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithPopup,
-} from "firebase/auth";
-import { useState } from "react";
+} from 'firebase/auth';
+import { useState } from 'react';
 
 function SignupPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const provider = new GoogleAuthProvider();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [displayPass, setDisplayPass] = useState(false);
   const [displayConfirmPass, setDisplayConfirm] = useState(false);
   const signUpWithEmailAndPassword = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      // Add error handling here.
       console.error(err);
     }
   };
@@ -30,7 +29,6 @@ function SignupPage() {
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
-      // Add error handling here.
       console.error(err);
     }
   };
@@ -38,15 +36,14 @@ function SignupPage() {
     event: React.KeyboardEvent<HTMLInputElement>,
     from: string
   ) => {
-    if (event.key === "Enter" && from === "email") {
+    if (event.key === 'Enter' && from === 'email') {
       setDisplayPass(true);
     }
-    if (event.key === "Enter" && from === "password_first") {
+    if (event.key === 'Enter' && from === 'password_first') {
       setDisplayConfirm(true);
     }
-    if (event.key === "Enter" && from === "password") {
+    if (event.key === 'Enter' && from === 'password') {
       if (confirmPassword !== password) {
-        // Display some error here.
         console.log("Passwords don't match!");
         return;
       }
@@ -72,7 +69,7 @@ function SignupPage() {
             setEmail(event.target.value);
           }}
           onKeyDown={(event) => {
-            keyPressed(event, "email");
+            keyPressed(event, 'email');
           }}
         />
         {displayPass && (
@@ -87,7 +84,7 @@ function SignupPage() {
               setPassword(event.target.value);
             }}
             onKeyDown={(event) => {
-              keyPressed(event, "password_first");
+              keyPressed(event, 'password_first');
             }}
           />
         )}
@@ -103,7 +100,7 @@ function SignupPage() {
               setConfirmPassword(event.target.value);
             }}
             onKeyDown={(event) => {
-              keyPressed(event, "password");
+              keyPressed(event, 'password');
             }}
           />
         )}
@@ -114,11 +111,11 @@ function SignupPage() {
         </div>
       </div>
       <div className="login-text">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <a
           className="log-in-txt"
           onClick={() => {
-            navigate("/login");
+            navigate('/login');
           }}
         >
           Log In

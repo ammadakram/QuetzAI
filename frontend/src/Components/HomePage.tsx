@@ -2,36 +2,45 @@ import React, { useState } from 'react';
 import './HomePage.css';
 
 function HomePage() {
+  // state to store the selected file
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  // handler function for file input change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files![0]; // Optional chaining to handle null
+    // get first file from the inpu
+    const file = event.target.files![0];
+    // update selected file state
     setSelectedFile(file);
   };
 
+  // handler function for when users click file upload box
   const handleBoxClick = () => {
+    // trigger a click event on the file input element
     document.getElementById('file-input')?.click();
   };
 
+  // handler function for form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // alert the user if no file is selected
     if (!selectedFile) {
       alert('Please select a file to upload.');
       return;
     }
 
-    // Send the file to your backend using FormData or Fetch API:
+    // create a new FormData object and append the selected file to it
     const formData = new FormData(event.currentTarget as HTMLFormElement);
     formData.append('file', selectedFile);
 
-    // Replace with your backend URL and handle the response appropriately
-    fetch('/upload', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error));
+    // file handling to backend not implemented yet.
+
+    // fetch('/upload', {
+    //   method: 'POST',
+    //   body: formData,
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => console.log(data))
+    //   .catch((error) => console.error(error));
   };
 
   return (
@@ -41,13 +50,6 @@ function HomePage() {
       </div>
 
       <div className="main-page">
-        {/* <div className="document-upload">
-          <form onSubmit={handleSubmit}>
-            <input type="file" onChange={handleChange} />
-            <button type="submit">upload document here</button>
-          </form>
-        </div> */}
-
         <div className="document-upload">
           <form onSubmit={handleSubmit}>
             <label
@@ -66,6 +68,7 @@ function HomePage() {
           </form>
         </div>
 
+        {/*Div for displaying user's previous converstaions (implementation yet to be done)*/}
         <div className="recent-conversations">
           <div className="recent-conversation">
             <p>Recent Conversation 1</p>
