@@ -11,10 +11,10 @@ function App() {
     <div>
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage />} />{" "}
+          {/* <Route path="/" element={<LandingPage />} />{" "} */}
           {/* Need to route this differently later. We will be checking if user exists when they log on. */}
-          {/* <Route path="/" element={<LandingPage />} /> */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/login" element={<LogInPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/reset-password" element={<ForgotPassword />} />

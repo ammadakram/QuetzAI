@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase-config';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase-config";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-} from '@firebase/auth';
-import './LogInPage.css';
+} from "@firebase/auth";
+import "./LogInPage.css";
 
 function LogInPage() {
   const navigate = useNavigate();
   // Creating a GoogleAuthProvider instance from firebase
   const provider = new GoogleAuthProvider();
   // State for entered email
-  const [enteredEmail, setEnteredEmail] = useState('');
+  const [enteredEmail, setEnteredEmail] = useState("");
   // State for password
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   // State to control display of password input
   const [displayPass, setDisplayPass] = useState(false);
 
@@ -24,6 +24,7 @@ function LogInPage() {
     try {
       // Signing in with email and password
       await signInWithEmailAndPassword(auth, enteredEmail, password);
+      navigate("/home");
     } catch (err) {
       // Logging any errors that occur during sign-in
       console.error(err);
@@ -35,6 +36,7 @@ function LogInPage() {
     try {
       // Signing in with Google using popup
       await signInWithPopup(auth, provider);
+      navigate("/home");
     } catch (err) {
       // Logging any errors that occur during sign-in with Google
       console.error(err);
@@ -46,10 +48,10 @@ function LogInPage() {
     event: React.KeyboardEvent<HTMLInputElement>,
     source: string
   ) => {
-    if (event.key === 'Enter' && source === 'password') {
+    if (event.key === "Enter" && source === "password") {
       // Call signInExistingUser function if Enter key pressed in password input
       signInExistingUser();
-    } else if (event.key === 'Enter' && source === 'email') {
+    } else if (event.key === "Enter" && source === "email") {
       // Display password input if Enter key pressed in email input
       setDisplayPass(true);
     }
@@ -77,9 +79,9 @@ function LogInPage() {
               }}
               onKeyDown={(event) => {
                 // Call keyPressed function with email
-                keyPressed(event, 'email');
+                keyPressed(event, "email");
               }}
-            ></input>{' '}
+            ></input>{" "}
           </div>
           {/* Display password input if user has enetered email */}
           {displayPass && (
@@ -95,13 +97,13 @@ function LogInPage() {
               }}
               onKeyDown={(event) => {
                 // call keyPressed function with password
-                keyPressed(event, 'password');
+                keyPressed(event, "password");
               }}
             />
           )}
           <button className="continue-btn" onClick={signInExistingUser}>
             Continue
-          </button>{' '}
+          </button>{" "}
           {/* trigger sign-in with email and password */}
           <p className="sign-up">
             <span>Don't have an account? </span>
@@ -110,7 +112,7 @@ function LogInPage() {
             className="sign-up-txt"
             onClick={() => {
               // Navigate to the signup page
-              navigate('/signup');
+              navigate("/signup");
             }}
           >
             Sign Up
