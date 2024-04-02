@@ -1,7 +1,8 @@
 tiktoken
 pypdf
 faiss-cpu
-langchain
+openai==1.10.0
+langchain==0.0.6
 langchain_openai
 pydantic
 typing
