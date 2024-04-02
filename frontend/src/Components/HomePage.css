@@ -26,22 +26,6 @@
   height: 100%;
 }
 
-.file-upload-box {
-  text-align: center;
-  font-size: 40px;
-  cursor: pointer;
-  color: #9db2bf;
-  border: 2px dashed #9db2bf;
-  padding: 100px 80px 100px 80px;
-  display: block;
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.file-upload-box input[type='file'] {
-  display: none;
-}
-
 .recent-conversations {
   display: flex;
   justify-content: space-between;
@@ -57,4 +41,48 @@
   font-size: 18px;
   padding-left: 10px;
   cursor: pointer;
+}
+
+.document-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* Adjust space between input and button */
+}
+
+.document-upload-input {
+  opacity: 0; /* Hide the default input */
+  width: 90%; /* Adjust to fit your design */
+  height: 40px; /* Adjust based on your preference */
+  position: relative;
+  z-index: 2; /* To be above the custom label */
+}
+
+.document-upload-input-label {
+  position: absolute;
+  z-index: 1;
+  width: 90%; /* Match input width */
+  background-color: #ffffff; /* Background of the custom input */
+  color: #333; /* Text color */
+  border: 2px solid #007bff; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  text-align: center;
+  line-height: 36px; /* Center text vertically, adjust as needed */
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.document-upload-btn {
+  background-color: #007bff; /* Blue */
+  color: #ffffff; /* White text */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.document-upload-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }

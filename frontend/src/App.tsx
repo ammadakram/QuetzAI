@@ -5,6 +5,7 @@ import LandingPage from "./Components/LandingPage1";
 import HomePage from "./Components/HomePage";
 import ForgotPassword from "./Components/ForgotPassword";
 import SignupPage from "./Components/SignupPage";
+import PrivateRoutes from "./Components/PrivateRoutes";
 
 function App() {
   return (
@@ -14,10 +15,12 @@ function App() {
           {/* <Route path="/" element={<LandingPage />} />{" "} */}
           {/* Need to route this differently later. We will be checking if user exists when they log on. */}
           <Route path="/" element={<LandingPage />} />
-          <Route path="/home" element={<HomePage />} />
           <Route path="/login" element={<LogInPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/reset-password" element={<ForgotPassword />} />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/home" element={<HomePage />} />
+          </Route>
         </Routes>
       </Router>
     </div>

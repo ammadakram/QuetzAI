@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import './HomePage.css';
+import React, { MouseEventHandler, useState } from "react";
+import { auth } from "../firebase-config";
+import { storage } from "../firebase-config";
+import { ref, uploadBytes } from "firebase/storage";
+import "./HomePage.css";
+import { upload } from "@testing-library/user-event/dist/upload";
+import { error } from "console";
 
 function HomePage() {
   // state to store the selected file
@@ -15,32 +20,36 @@ function HomePage() {
 
   // handler function for when users click file upload box
   const handleBoxClick = () => {
+    console.log(auth.currentUser?.uid);
     // trigger a click event on the file input element
-    document.getElementById('file-input')?.click();
+    document.getElementById("file-input")?.click();
   };
 
   // handler function for form submission
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     // alert the user if no file is selected
+    console.log("Inside handle submit!");
     if (!selectedFile) {
-      alert('Please select a file to upload.');
+      alert("Please select a file to upload.");
       return;
     }
+    console.log("Proceeding with upload.");
 
     // create a new FormData object and append the selected file to it
-    const formData = new FormData(event.currentTarget as HTMLFormElement);
-    formData.append('file', selectedFile);
+    const fileRef = ref(
+      storage,
+      `files/${auth.currentUser?.uid}/${selectedFile.name}`
+    );
 
-    // file handling to backend not implemented yet.
-
-    // fetch('/upload', {
-    //   method: 'POST',
-    //   body: formData,
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data))
-    //   .catch((error) => console.error(error));
+    // Cannot handle multiple files yet. Maybe try this later.
+    console.log("Attempting to upload file.");
+    uploadBytes(fileRef, selectedFile)
+      .then(() => {
+        console.log("File uploaded successfully.");
+      })
+      .catch((error) => {
+        console.log("An error occurred during file upload: \n", error);
+      });
   };
 
   return (
@@ -51,21 +60,19 @@ function HomePage() {
 
       <div className="main-page">
         <div className="document-upload">
-          <form onSubmit={handleSubmit}>
-            <label
-              htmlFor="file-input"
-              className="file-upload-box"
-              onClick={handleBoxClick}
-            >
-              <input
-                id="file-input"
-                type="file"
-                onChange={handleChange}
-                style={{ display: 'none' }}
-              />
-              <span>upload or drag document here</span>
-            </label>
-          </form>
+          <input
+            id="file-input"
+            className="document-upload-input"
+            type="file"
+            onChange={handleChange} // Changed to the existing handleChange function for consistency
+          />
+          {/* Custom label that acts as the stylized input area */}
+          <label htmlFor="file-input" className="document-upload-input-label">
+            Upload your document here
+          </label>
+          <button className="document-upload-btn" onClick={handleSubmit}>
+            Upload File
+          </button>
         </div>
 
         {/*Div for displaying user's previous converstaions (implementation yet to be done)*/}
