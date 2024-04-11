@@ -23,7 +23,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-// Initialize Firebase Authentication and get a reference to the service
+// Initialize various Firebase roots. To save space, I also initialize my own backend root path here.
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 export const db = getFirestore(app);
+export const backend_root = "https://localhost:8000"; // This will change during hosting.
