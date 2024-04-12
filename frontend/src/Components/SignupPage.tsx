@@ -8,6 +8,8 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -19,10 +21,18 @@ function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [displayPass, setDisplayPass] = useState(false);
   const [displayConfirmPass, setDisplayConfirm] = useState(false);
+  const createUserRecord = async () => {
+    await setDoc(doc(db, "user_info", `${auth.currentUser?.uid}`), {
+      username: auth.currentUser?.email,
+      chats: [],
+      files: [],
+    });
+  };
   // async function for signing up with email and password.
   const signUpWithEmailAndPassword = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      await createUserRecord();
       navigate("/home");
     } catch (err) {
       console.error(err);
@@ -32,6 +42,7 @@ function SignupPage() {
   const signUpWithGoogle = async () => {
     try {
       await signInWithPopup(auth, provider);
+      await createUserRecord();
       navigate("/home");
     } catch (err) {
       console.error(err);

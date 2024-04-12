@@ -145,7 +145,7 @@ def establish_retriever(doc_paths: List[str] = None, chunk_size: int = 1000, ove
     doc_names = [doc.split('/')[-1].split('.')[0] for doc in doc_paths]
 
     # CHANGE THIS TO YOUR ROOT (the path to the folder where db info for ALL USERS is stored)
-    saved_db_root = ''
+    saved_db_root = 'indices/'
 
     # Combine all names for hashing
     saved_db_name = ('_').join(doc_names)

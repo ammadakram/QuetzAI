@@ -1,32 +1,40 @@
 import React, { MouseEventHandler, useState } from "react";
-import { auth } from "../firebase-config";
+import { auth, backend_root } from "../firebase-config";
 import { storage } from "../firebase-config";
 import { ref, uploadBytes } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+import { db } from "../firebase-config";
+import axios from "axios";
 import "./HomePage.css";
-import { upload } from "@testing-library/user-event/dist/upload";
-import { error } from "console";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
 
 function HomePage() {
   // state to store the selected file
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   // handler function for file input change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // get first file from the inpu
+    // get first file from the input
     const file = event.target.files![0];
     // update selected file state
     setSelectedFile(file);
   };
 
-  // handler function for when users click file upload box
-  const handleBoxClick = () => {
-    console.log(auth.currentUser?.uid);
-    // trigger a click event on the file input element
-    document.getElementById("file-input")?.click();
+  const addUserFileAndChat = async (filePath: string) => {
+    try {
+      const doc_ref = doc(db, "user_info", `${auth.currentUser?.uid}`);
+      await updateDoc(doc_ref, {
+        files: arrayUnion(filePath),
+        chats: arrayUnion(crypto.randomUUID()),
+      });
+    } catch (error) {
+      console.log("An error occurred in updating the user's records: ", error);
+    }
   };
 
   // handler function for form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // alert the user if no file is selected
     console.log("Inside handle submit!");
     if (!selectedFile) {
@@ -34,22 +42,25 @@ function HomePage() {
       return;
     }
     console.log("Proceeding with upload.");
-
-    // create a new FormData object and append the selected file to it
-    const fileRef = ref(
-      storage,
-      `files/${auth.currentUser?.uid}/${selectedFile.name}`
-    );
+    const filePath = `files/${auth.currentUser?.uid}/${selectedFile.name}`;
+    const fileRef = ref(storage, filePath);
 
     // Cannot handle multiple files yet. Maybe try this later.
-    console.log("Attempting to upload file.");
-    uploadBytes(fileRef, selectedFile)
-      .then(() => {
-        console.log("File uploaded successfully.");
-      })
-      .catch((error) => {
-        console.log("An error occurred during file upload: \n", error);
-      });
+    try {
+      await uploadBytes(fileRef, selectedFile);
+      console.log("File uploaded successfully.");
+      let response = await axios.get(
+        `${backend_root}/download?path=${filePath}`
+      );
+      console.log("Received response from backend: ", response);
+      await addUserFileAndChat(filePath);
+      navigate(`/chat?path=${filePath}`);
+    } catch (error) {
+      console.log(
+        "An error occurred during file upload or download: \n",
+        error
+      );
+    }
   };
 
   return (

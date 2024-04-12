@@ -80,7 +80,7 @@ tools = [retriever_tool]
 @tool
 def math_tool(query):
     "Takes in a arithmetic equation as query and solves the equation in a step-by-step manner."
-    llm_math_chain = LLMMathChain.from_llm(llm, verbose=True)
+    llm_math_chain = LLMMathChain.from_llm(llm, verbose=False)
     response = llm_math_chain.run(query)
 
     return response

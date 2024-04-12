@@ -1,9 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
+const initializeApp = require("firebase/app").initializeApp;
+const getStorage = require("firebase/storage").getStorage;
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,9 +19,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-// Initialize various Firebase roots. To save space, I also initialize my own backend root path here.
-export const auth = getAuth(app);
-export const storage = getStorage(app);
-export const db = getFirestore(app);
-export const backend_root = "http://localhost:8000"; // This will change during hosting.
+const storage = getStorage(app);
+
+module.exports = {storage}

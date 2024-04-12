@@ -6,6 +6,7 @@ import HomePage from "./Components/HomePage";
 import ForgotPassword from "./Components/ForgotPassword";
 import SignupPage from "./Components/SignupPage";
 import PrivateRoutes from "./Components/PrivateRoutes";
+import ChatPage from "./Components/ChatPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/reset-password" element={<ForgotPassword />} />
           <Route element={<PrivateRoutes />}>
             <Route path="/home" element={<HomePage />} />
+            <Route path="/chat" element={<ChatPage />} />
           </Route>
         </Routes>
       </Router>
