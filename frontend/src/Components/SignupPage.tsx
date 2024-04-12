@@ -28,8 +28,26 @@ function SignupPage() {
       files: [],
     });
   };
+  const handleRendering = () => {
+    if (!displayPass) {
+      setDisplayPass(true);
+      return false;
+    }
+    if (!displayConfirmPass) {
+      setDisplayConfirm(true);
+      return false;
+    }
+    if (confirmPassword !== password) {
+      console.log("Passwords don't match!");
+      return false;
+    }
+    return true;
+  };
   // async function for signing up with email and password.
   const signUpWithEmailAndPassword = async () => {
+    if (!handleRendering()) {
+      return;
+    }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       await createUserRecord();
@@ -40,6 +58,9 @@ function SignupPage() {
   };
   // async function for signing up with Google.
   const signUpWithGoogle = async () => {
+    if (!handleRendering()) {
+      return;
+    }
     try {
       await signInWithPopup(auth, provider);
       await createUserRecord();
@@ -54,16 +75,12 @@ function SignupPage() {
     from: string
   ) => {
     if (event.key === "Enter" && from === "email") {
-      setDisplayPass(true);
+      handleRendering();
     }
     if (event.key === "Enter" && from === "password_first") {
-      setDisplayConfirm(true);
+      handleRendering();
     }
     if (event.key === "Enter" && from === "password") {
-      if (confirmPassword !== password) {
-        console.log("Passwords don't match!");
-        return;
-      }
       signUpWithEmailAndPassword();
     }
   };

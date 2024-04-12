@@ -21,6 +21,10 @@ function LogInPage() {
 
   // sign in existing user with email and password
   const signInExistingUser = async () => {
+    if (!displayPass) {
+      setDisplayPass(true);
+      return;
+    }
     try {
       // Signing in with email and password
       await signInWithEmailAndPassword(auth, enteredEmail, password);
@@ -33,6 +37,10 @@ function LogInPage() {
 
   // sign in with Google
   const signInWithGoogle = async () => {
+    if (!displayPass) {
+      setDisplayPass(true);
+      return;
+    }
     try {
       // Signing in with Google using popup
       await signInWithPopup(auth, provider);
