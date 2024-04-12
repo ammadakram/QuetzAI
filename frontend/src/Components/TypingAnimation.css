@@ -6,32 +6,13 @@
     position: relative; /* Ensure cursor positioning */
   }
   
-  .cursor {
-    position: absolute; /* Position cursor relative to text */
-    top: 20%;
-    left: 100%; /* Position cursor at the end of the text */
-    width: 3px;
-    height: 30px;
-    background-color: #fff;
-    margin-left: 0px;
-    animation: cursor-blink 1s infinite;
-  }
-  
+
   @keyframes typing {
     from {
       width: 0;
     }
     to {
       width: 100%;
-    }
-  }
-  
-  @keyframes cursor-blink {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
     }
   }
   

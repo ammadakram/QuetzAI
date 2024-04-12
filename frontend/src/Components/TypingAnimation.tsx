@@ -42,7 +42,6 @@ interface TypingAnimationProps {
       return (
         <div className="text-container" style={{ fontSize }}>
           {textToType}
-          <span ref={cursorRef} className="cursor"></span>
         </div>
       );
     };
