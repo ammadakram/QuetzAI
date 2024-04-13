@@ -28,7 +28,7 @@
 
 .create-account-text {
   margin-bottom: 1rem; /* Space below the text */
-  font-size: 2rem; /* Larger text */
+  font-size: 30px; /* Larger text */
   font-weight: bold;
   color: #333; /* Dark text for better readability */
 }
@@ -40,6 +40,7 @@
   margin: 0.5rem 0; /* Margin for spacing */
   border-radius: 4px; /* Rounded borders */
   border: 1px solid #ddd; /* Light border */
+  font-size: 15px;
 }
 
 .next-box {
@@ -65,6 +66,7 @@
 /* Styling for login text and link */
 .login-text {
   margin-top: 1rem; /* Space above the text */
+  font-size: 15px;
 }
 
 .log-in-txt {
@@ -81,6 +83,7 @@
   display: flex;
   align-items: center;
   margin: 2rem 0; /* Spacing */
+  width: 320px;
 }
 
 .line {
@@ -118,3 +121,5 @@
 .social-login-box:hover {
   background-color: #f8f9fa; /* Slight background color on hover */
 }
+
+

@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   height: 100vh;
+  min-height: 100vh;
 }
 
 .logo {
@@ -19,32 +20,36 @@
 }
 
 .login-container {
-  flex: 1 0 auto;
+  /* flex: 1 0 auto; */
+  /*
+  */
+
   min-height: 0;
-  display: grid;
+  display: flex;
   box-sizing: border-box;
   grid-template-rows: [left-start center-start right-start] 1fr [left-end center-end right-end];
   grid-template-columns: [left-start center-start] 1fr [left-end right-start] 1fr [center-end right-end];
   /* align-items: center;
   justify-content: center;
   justify-items: center;
-  column-gap: 160px;
-  grid-column-gap: 160px; */
-  padding: 10px;
+  /* column-gap: 160px; */
+  /* grid-column-gap: 160px; */ 
+  padding: 0px;
   /* width: 100%;  */
 }
 
+
 .container-wrapper {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+  width: 100%; /* Full width */
+  max-width: 400px; /* Max width for larger screens */
   /* justify-content: space-evenly;  */
-  width: 100%;
   height: 100%;
   white-space: normal;
   border-radius: 5px;
   position: relative;
-  grid-area: center;
   box-shadow: none;
   box-sizing: content-box;
 }
@@ -64,9 +69,10 @@
   width: 100%;
 }
 
+
 .title-box {
   border-top: 0;
-  padding: 40px 40px 24px;
+  padding: 10px 40px 10px; /* Adjusted padding */
   box-sizing: content-box;
 }
 
@@ -80,9 +86,12 @@
 }
 
 .email-wrapper {
-  margin-top: 20px;
+  flex-direction: column;
+  width: 100%; /* Full width */
+  max-width: 400px; /* Max width for larger screens */
+  /* margin-top: 20px;
   width: 320px;
-  box-sizing: content-box;
+  box-sizing: content-box; */
 }
 
 .email-input {
@@ -103,32 +112,42 @@
 .continue-btn {
   border-width: 0px;
   height: 52px;
-  width: 320px;
+  /* width: 320px; */
+  flex-direction: column;
+  width: 100%; /* Full width */
+  max-width: 400px; /* Max width for larger screens */
   background-color: #27374d;
   color: #fff;
   align-items: center;
   justify-content: center;
   display: flex;
   border-radius: 8px;
-  padding: 4px 16px;
+  padding: 10px 20px;
   margin-top: 25px;
-  font-size: 18px;
+  margin-bottom: 30px;
+  font-size: 15px;
   cursor: pointer;
 }
 
 .sign-up-txt {
   cursor: pointer;
-  color: rgb(0, 0, 238);
+  color: #007bff;
 }
 
 .continue-btn:hover {
   background-color: #2e435f;
 }
 
-.sign-up {
+/* .sign-up {
   display: flex;
   align-items: center;
   font-size: 17px;
+} */
+
+.sign-up {
+  display: inline; /* Change from 'flex' to 'inline' */
+  align-items: center;
+  font-size: 15px;
 }
 
 .or-line {
@@ -157,6 +176,7 @@
   flex-direction: column;
   align-items: center;
   margin: 10px 0;
+  font-size: 15px;
 }
 
 .social-login-box {

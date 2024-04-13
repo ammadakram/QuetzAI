@@ -58,7 +58,8 @@ function SignupPage() {
   };
 
   return (
-    <div className="SignupPage">
+    <main>
+      <div className="SignupPage">
       <div className="logo">
         <img src="./QuetzAI_logo_Inverted.png" alt="Logo" />
       </div>
@@ -117,7 +118,7 @@ function SignupPage() {
         </div>
       </div>
       <div className="login-text">
-        Already have an account?{" "}
+        Don't have an account?{" "}
         <a
           className="log-in-txt"
           onClick={() => {
@@ -129,7 +130,7 @@ function SignupPage() {
       </div>
       <div className="or-line">
         <div className="line"></div>
-        <div className="or-box">Or</div>
+        <div className="or-box">OR</div>
         <div className="line"></div>
       </div>
       <div className="social-login-boxes">
@@ -163,6 +164,7 @@ function SignupPage() {
         </a>
       </div>
     </div>
+    </main>
   );
 }
 

@@ -106,17 +106,17 @@ function LogInPage() {
           </button>{" "}
           {/* trigger sign-in with email and password */}
           <p className="sign-up">
-            <span>Don't have an account? </span>
+            Don't have an account?{" "}
+            <a
+              className="sign-up-txt"
+              onClick={() => {
+                // Navigate to the signup page
+                navigate("/signup");
+              }}
+            >
+              Sign Up
+            </a>
           </p>
-          <a
-            className="sign-up-txt"
-            onClick={() => {
-              // Navigate to the signup page
-              navigate("/signup");
-            }}
-          >
-            Sign Up
-          </a>
           <div className="or-line">
             <div className="line"></div>
             <div className="or-box">OR</div>
