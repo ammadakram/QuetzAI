@@ -21,12 +21,13 @@ function HomePage() {
     setSelectedFile(file);
   };
 
-  const addUserFileAndChat = async (filePath: string) => {
+  const addUserFileAndChat = async (filePath: string, id: string) => {
     try {
       const doc_ref = doc(db, "user_info", `${auth.currentUser?.uid}`);
       await updateDoc(doc_ref, {
         files: arrayUnion(filePath),
-        chats: arrayUnion(crypto.randomUUID()),
+        chats: arrayUnion(id),
+        chat_and_file: arrayUnion({ chat_id: id, file_path: filePath }),
       });
     } catch (error) {
       console.log("An error occurred in updating the user's records: ", error);
@@ -48,12 +49,13 @@ function HomePage() {
     // Cannot handle multiple files yet. Maybe try this later.
     try {
       await uploadBytes(fileRef, selectedFile);
+      let chat_id = crypto.randomUUID();
       console.log("File uploaded successfully.");
       let response = await axios.get(
-        `${backend_root}/download?path=${filePath}`
+        `${backend_root}/download?id=${chat_id}&path=${filePath}`
       );
       console.log("Received response from backend: ", response);
-      await addUserFileAndChat(filePath);
+      await addUserFileAndChat(filePath, chat_id);
       navigate(`/chat?path=${filePath}`);
     } catch (error) {
       console.log(

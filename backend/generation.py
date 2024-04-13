@@ -32,6 +32,7 @@ import os
 import hashlib
 import warnings
 import sys
+import json
 
 warnings.filterwarnings('ignore')
 
@@ -60,8 +61,13 @@ llm = ChatOpenAI(temperature=0, openai_api_key=openai_api_key,
                  model="gpt-3.5-turbo")
 
 # ================ USE ESTABLISH RETRIEVER TO BUILD THE RETRIEVER OBJECT PASSED TO THE retriever_tool function below ====================
-paths = [sys.argv[1]]  # Just one file atm.
-retriever = establish_retriever(paths)
+# Here, we should fetch the context from a file. The command line argument will always just be
+# the latest query. Store context in 'context/user_id/chat_id.
+# We would append the new query to the context.
+chat_id = sys.argv[1]
+paths = [sys.argv[2]]  # Just one file atm.
+query = sys.argv[3]
+retriever = establish_retriever(chat_id, paths)
 
 
 # This is the retrieval tool that searches the documents and fetches chunks most similar to user query using FAISS. DO NOT CHANGE THIS FUNCTION DEFINITION SINCE THIS IS EXPECTED BY LANGCHAIN API.
@@ -144,13 +150,39 @@ agent = create_openai_functions_agent(llm=llm, tools=tools, prompt=prompt)
 agent_executor = AgentExecutor(
     agent=agent, tools=tools, memory=memory, verbose=False)
 
-
 # ============================== ADD ENDPOINT FOR THIS FUNCTION ==============================
-# Here, we should fetch the context from a file. The command line argument will always just be
-# the latest query. Store context in 'context/user_id/chat_id.
-# We would append the new query to the context.
-query = sys.argv[2]
 # This function passes user queries to the model and returns the inferred response
+
+
+def save_history(data, filename):
+    with open(filename, 'w') as file:
+        for idx, message in enumerate(data['history']):
+            if idx % 2 == 0:
+                file.write(f"Human: {message.content}\n")
+            else:
+                file.write(f"AI: {message.content}\n")
+
+
+def load_history(filename):
+    human_dict = {}
+    ai_dict = {}
+    counter = 0
+
+    with open(filename, 'r') as file:
+        for line in file:
+            if line.startswith('Human:'):
+                key = f'message{counter}'
+                human_dict[key] = line[len('Human: '):].strip()
+            elif line.startswith('AI:'):
+                key = f'response{counter}'
+                ai_dict[key] = line[len('AI: '):].strip()
+                counter += 1  # Increment the counter after an AI message completes a cycle
+    # Load the history into the agent.
+    for idx in range(len(human_dict.keys())):
+        key_human = f"message{idx}"
+        key_ai = f"response{idx}"
+        agent_executor.memory.save_context({"input": human_dict[key_human]}, {
+                                           "output": ai_dict[key_ai]})
 
 
 def infer(query: str = None):
@@ -160,9 +192,16 @@ def infer(query: str = None):
     parameters:
     query: The query sent to the agent by the user.
     """
+    history_file_path = f"history/{chat_id}"
+    if os.path.exists(history_file_path):
+        load_history(history_file_path)
+    else:
+        os.mkdir(history_file_path.split("/")[0])
     agent_input = {'input': query}
     result = agent_executor(agent_input)
-
+    # Save the history
+    history_dict = agent_executor.memory.load_memory_variables({})
+    save_history(history_dict, history_file_path)
     return result['output']
 
 

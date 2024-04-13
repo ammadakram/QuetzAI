@@ -2,6 +2,7 @@
 
 import os
 import hashlib
+import sys
 
 # used to load the pdfs
 from langchain.document_loaders import PyPDFLoader
@@ -122,7 +123,7 @@ def check_file_exists(folder_path: str = None, file_name: str = None):
 
 # PLEASE CHANGE THE SAVED_DB_ROOT VARIABLE HERE ACCORDING TO YOUR PATHS!
 
-def establish_retriever(doc_paths: List[str] = None, chunk_size: int = 1000, overlap: int = 50):
+def establish_retriever(chat_id: str, doc_paths: List[str] = None, chunk_size: int = 1000, overlap: int = 50):
     """
     doc_paths: List of paths to the user uploaded documents.
     chunk_size: Maximum chunk size to which doc is broken into.
@@ -145,7 +146,7 @@ def establish_retriever(doc_paths: List[str] = None, chunk_size: int = 1000, ove
     doc_names = [doc.split('/')[-1].split('.')[0] for doc in doc_paths]
 
     # CHANGE THIS TO YOUR ROOT (the path to the folder where db info for ALL USERS is stored)
-    saved_db_root = 'indices/'
+    saved_db_root = f'indices/{chat_id}'
 
     # Combine all names for hashing
     saved_db_name = ('_').join(doc_names)
@@ -181,3 +182,9 @@ def establish_retriever(doc_paths: List[str] = None, chunk_size: int = 1000, ove
     db_base.save_local(saved_db_path)
     # db_base = db_base.as_retriever()
     return db_base
+
+
+if __name__ == "__main__":
+    chat_id = sys.argv[1]
+    path = [sys.argv[2]]
+    establish_retriever(chat_id, path)

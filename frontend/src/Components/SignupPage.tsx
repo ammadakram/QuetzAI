@@ -26,6 +26,7 @@ function SignupPage() {
       username: auth.currentUser?.email,
       chats: [],
       files: [],
+      chat_and_file: [],
     });
   };
   const handleRendering = () => {
@@ -58,9 +59,6 @@ function SignupPage() {
   };
   // async function for signing up with Google.
   const signUpWithGoogle = async () => {
-    if (!handleRendering()) {
-      return;
-    }
     try {
       await signInWithPopup(auth, provider);
       await createUserRecord();

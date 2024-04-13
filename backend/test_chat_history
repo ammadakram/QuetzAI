@@ -1,0 +1,4 @@
+Human: How does spanner solve the issue of stale writes?
+AI: Spanner solves the issue of stale writes by using the concept of snapshot isolation. It defines timestamps for every interaction, where the timestamp for read-write transactions is the commit time and for read-only transactions is the start time. Read-only transactions will only use the record with the largest timestamp less than its own timestamp, ensuring a serializable order.
+Human: How does spanner solve the issue of stale writes?
+AI: Spanner solves the issue of stale writes by using the concept of snapshot isolation. It defines timestamps for every interaction, where the timestamp for read-write transactions is the commit time and for read-only transactions is the start time. Read-only transactions will only use the record with the largest timestamp less than its own timestamp, ensuring a serializable order.

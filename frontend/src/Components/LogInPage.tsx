@@ -37,10 +37,6 @@ function LogInPage() {
 
   // sign in with Google
   const signInWithGoogle = async () => {
-    if (!displayPass) {
-      setDisplayPass(true);
-      return;
-    }
     try {
       // Signing in with Google using popup
       await signInWithPopup(auth, provider);
