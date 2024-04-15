@@ -1,0 +1,18 @@
+.text-container {
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 90%; /* Set maximum width to 90% of the left div */
+    position: relative; /* Ensure cursor positioning */
+  }
+  
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
