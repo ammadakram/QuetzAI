@@ -1,32 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ChatPage.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { backend_root } from "../firebase-config";
+import { doc, arrayUnion, updateDoc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase-config";
 
 interface Message {
-  id: number;
+  id: string;
   text: string;
   sender: "user" | "bot";
 }
 
 const ChatPage: React.FC = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const path = queryParams.get("path"); // Get 'path' query parameter
+  const path = location.state.path; // Get file path
+  const chat_id = location.state.id; // Get chat id
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState("idle");
+  const chatHistoryRef = doc(
+    db,
+    `user_chat_history/${auth.currentUser?.uid}/history/${chat_id}`
+  );
+
+  useEffect(() => {
+    console.log("Fetching history!");
+    fetchHistory();
+  }, []);
+
+  const fetchHistory = async () => {
+    try {
+      let historyDoc = await getDoc(chatHistoryRef);
+      let history = historyDoc.data()?.chat;
+      console.log("Acquired history: ", history);
+      history = history.map((elem: any, index: any) => {
+        let newMessage: Message;
+        if (index % 2 === 0) {
+          newMessage = {
+            id: crypto.randomUUID(),
+            text: elem,
+            sender: "user",
+          };
+        } else {
+          newMessage = {
+            id: crypto.randomUUID(),
+            text: elem,
+            sender: "bot",
+          };
+        }
+        return newMessage;
+      });
+      setMessages(history);
+    } catch (error) {
+      console.log("Error in fetching history: ", error);
+    }
+  };
+  const updateChatHistory = async (query: string, response: string) => {
+    try {
+      await updateDoc(chatHistoryRef, {
+        chat: arrayUnion(query, response),
+      });
+    } catch (error) {
+      console.log("An error occurred in updating the user's records: ", error);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
   const queryLLM = async () => {
+    console.log("Chat id is: ", chat_id);
     try {
       let temp_res = await axios.get(
-        `${backend_root}/generate?path=${path}&query=${encodeURIComponent(
+        `${backend_root}/generate?id=${chat_id}&path=${path}&query=${encodeURIComponent(
           query
         )}`
       );
@@ -36,6 +85,7 @@ const ChatPage: React.FC = () => {
       }
       return temp_res.data.result;
     } catch (error) {
+      console.log("Error occurred during generation: ", error);
       return error;
     }
   };
@@ -43,22 +93,28 @@ const ChatPage: React.FC = () => {
   const handleKeyPress = async (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && query.trim() !== "") {
       const newMessage: Message = {
-        id: messages.length,
+        id: crypto.randomUUID(),
         text: query,
         sender: "user",
       };
-      console.log(location.search); // For debugging
       setMessages([...messages, newMessage]);
       setQuery("");
       setResponse("processing");
       let temp_res = await queryLLM();
+      updateChatHistory(newMessage.text, temp_res)
+        .then(() => {
+          console.log("Updated history successfully.");
+        })
+        .catch(() => {
+          console.log("Error in updating history.");
+        });
       simulateResponse(temp_res);
     }
   };
 
   const simulateResponse = (llm_response: string) => {
     const response: Message = {
-      id: messages.length,
+      id: crypto.randomUUID(),
       text: `${llm_response}`,
       sender: "bot",
     };

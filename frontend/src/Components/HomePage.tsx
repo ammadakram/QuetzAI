@@ -1,17 +1,63 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import { auth, backend_root } from "../firebase-config";
 import { storage } from "../firebase-config";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase-config";
 import axios from "axios";
 import "./HomePage.css";
-import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+
+interface FileAndChat {
+  chat_id: string;
+  file_path: string;
+}
 
 function HomePage() {
   // state to store the selected file
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [chats, setChats] = useState<FileAndChat[]>([]);
+  const [fileNames, setFileNames] = useState([""]);
   const navigate = useNavigate();
+  const chatsRef = doc(db, `user_info/${auth.currentUser?.uid}`);
+
+  const fetchChats = async () => {
+    try {
+      let chats_temp = await getDoc(chatsRef);
+      if (!chats_temp.exists()) {
+        console.log("Cannot fetch user data!");
+        return;
+      }
+
+      const chatData = chats_temp.data()?.chat_and_file;
+      if (chatData) {
+        setChats(chatData);
+        let fileNamesTemp = chatData.map((elem: any) => {
+          let file_path: string = elem.file_path;
+          let file_name = file_path.split("/").slice(-1, -1);
+          return file_name;
+        });
+        setFileNames(fileNamesTemp);
+      }
+    } catch (error) {
+      console.log("Could not fetch User data due to: ", error);
+    }
+  };
+
+  const handleChatNavigation = async (chat_id: string, file_path: string) => {
+    navigate("/chat", {
+      state: { id: chat_id, path: file_path },
+    });
+  };
+
+  // Load user data upon loading.
+  useEffect(() => {
+    fetchChats();
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(chats);
+  // }, [chats]);
 
   // handler function for file input change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,10 +70,17 @@ function HomePage() {
   const addUserFileAndChat = async (filePath: string, id: string) => {
     try {
       const doc_ref = doc(db, "user_info", `${auth.currentUser?.uid}`);
+      const history_ref = doc(
+        db,
+        `user_chat_history/${auth.currentUser?.uid}/history/${id}`
+      );
       await updateDoc(doc_ref, {
         files: arrayUnion(filePath),
         chats: arrayUnion(id),
         chat_and_file: arrayUnion({ chat_id: id, file_path: filePath }),
+      });
+      await setDoc(history_ref, {
+        chat: [],
       });
     } catch (error) {
       console.log("An error occurred in updating the user's records: ", error);
@@ -56,7 +109,9 @@ function HomePage() {
       );
       console.log("Received response from backend: ", response);
       await addUserFileAndChat(filePath, chat_id);
-      navigate(`/chat?path=${filePath}`);
+      navigate("/chat", {
+        state: { id: chat_id, path: filePath },
+      });
     } catch (error) {
       console.log(
         "An error occurred during file upload or download: \n",
@@ -77,7 +132,7 @@ function HomePage() {
             id="file-input"
             className="document-upload-input"
             type="file"
-            onChange={handleChange} // Changed to the existing handleChange function for consistency
+            onChange={handleChange}
           />
           {/* Custom label that acts as the stylized input area */}
           <label htmlFor="file-input" className="document-upload-input-label">
@@ -90,18 +145,15 @@ function HomePage() {
 
         {/*Div for displaying user's previous converstaions (implementation yet to be done)*/}
         <div className="recent-conversations">
-          <div className="recent-conversation">
-            <p>Recent Conversation 1</p>
-          </div>
-          <div className="recent-conversation">
-            <p>Recent Conversation 2</p>
-          </div>
-          <div className="recent-conversation">
-            <p>Recent Conversation 3</p>
-          </div>
-          <div className="recent-conversation">
-            <p>Recent Conversation 4</p>
-          </div>
+          {chats.map((chat) => (
+            <div
+              className="recent-conversation"
+              key={chat.chat_id}
+              onClick={() => handleChatNavigation(chat.chat_id, chat.file_path)}
+            >
+              <p>Conversation with {chat.file_path.split("/").pop()}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -1,0 +1,10 @@
+Human: What logs does Manu use?
+AI: Manu records data definition requests such as creating/deleting collections, data manipulation requests such as inserting/deleting vectors, and system coordination messages such as loading/dumping to/from memory. They use logical logs as they are more concerned with event-ordering rather than the physical changes being made to memory.
+Human: Who is the President of Pakistan?
+AI: The President of Pakistan is Arif Alvi.
+Human: No, that was the old President. Who is the current President?
+AI: The current President of Pakistan is Arif Alvi.
+Human: Incorrect. Do a google search and tell me the correct answer
+AI: As per the search results, Asif Ali Zardari is the current President of Pakistan since March 10, 2024.
+Human: hello
+AI: Hello! How can I assist you today?

@@ -61,20 +61,17 @@ llm = ChatOpenAI(temperature=0, openai_api_key=openai_api_key,
                  model="gpt-3.5-turbo")
 
 # ================ USE ESTABLISH RETRIEVER TO BUILD THE RETRIEVER OBJECT PASSED TO THE retriever_tool function below ====================
-# Here, we should fetch the context from a file. The command line argument will always just be
-# the latest query. Store context in 'context/user_id/chat_id.
-# We would append the new query to the context.
 chat_id = sys.argv[1]
 paths = [sys.argv[2]]  # Just one file atm.
 query = sys.argv[3]
-retriever = establish_retriever(chat_id, paths)
+retriever = establish_retriever(chat_id, paths).as_retriever()
 
 
 # This is the retrieval tool that searches the documents and fetches chunks most similar to user query using FAISS. DO NOT CHANGE THIS FUNCTION DEFINITION SINCE THIS IS EXPECTED BY LANGCHAIN API.
 @tool
 def retriever_tool(query):
     "Searches and returns relevant documents to user queries regarding the uploaded document"
-    docs = retriever.similarity_search(query)
+    docs = retriever.get_relevant_documents(query)
     return docs
 
 
@@ -192,11 +189,13 @@ def infer(query: str = None):
     parameters:
     query: The query sent to the agent by the user.
     """
+    if not os.path.exists("history"):
+        os.mkdir("history")
+
     history_file_path = f"history/{chat_id}"
     if os.path.exists(history_file_path):
         load_history(history_file_path)
-    else:
-        os.mkdir(history_file_path.split("/")[0])
+
     agent_input = {'input': query}
     result = agent_executor(agent_input)
     # Save the history

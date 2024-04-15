@@ -25,9 +25,14 @@ const runGenerationScript = async (chat_id, path, query) => {
             output += data.toString();
             console.log("Received output from script which is: ", output)
         })
+
+        // py.stderr.on('data', (data)=> {
+        //     console.log("Some error info in the script: ", data.toString())
+        // }) 
             
         py.on("exit", (code) => {
             if (parseInt(code) !== 0){
+                console.log("Some error occurred in the generation script!")
                 reject("Some error occurred during generation");
             }
             else {
