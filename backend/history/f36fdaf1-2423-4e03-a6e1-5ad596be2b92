@@ -1,0 +1,4 @@
+Human: Can you explain the solution to Problem 2 to me?
+AI: The solution to Problem 2 involves maintaining three data structures: an array of tuples containing price/kg and total weight of gemstones, an array for selected gemstones, and a variable for total value. The algorithm includes a recursive function called Max_Value that considers capacity, selected gemstones, and total value. The gemstone_arr can be pre-processed by sorting based on decreasing price/kg.
+Human: Give me a short title describing the conversation so far.
+AI: Discussion on Problem 2 Solution Approach

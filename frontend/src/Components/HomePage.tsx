@@ -11,6 +11,7 @@ import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 interface FileAndChat {
   chat_id: string;
   file_path: string;
+  title: string;
 }
 
 function HomePage() {
@@ -20,6 +21,8 @@ function HomePage() {
   const [fileNames, setFileNames] = useState([""]);
   const navigate = useNavigate();
   const chatsRef = doc(db, `user_info/${auth.currentUser?.uid}`);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [fileUploading, setFileUploading] = useState(false);
 
   const fetchChats = async () => {
     try {
@@ -39,6 +42,7 @@ function HomePage() {
         });
         setFileNames(fileNamesTemp);
       }
+      setDataLoaded(true);
     } catch (error) {
       console.log("Could not fetch User data due to: ", error);
     }
@@ -67,26 +71,6 @@ function HomePage() {
     setSelectedFile(file);
   };
 
-  const addUserFileAndChat = async (filePath: string, id: string) => {
-    try {
-      const doc_ref = doc(db, "user_info", `${auth.currentUser?.uid}`);
-      const history_ref = doc(
-        db,
-        `user_chat_history/${auth.currentUser?.uid}/history/${id}`
-      );
-      await updateDoc(doc_ref, {
-        files: arrayUnion(filePath),
-        chats: arrayUnion(id),
-        chat_and_file: arrayUnion({ chat_id: id, file_path: filePath }),
-      });
-      await setDoc(history_ref, {
-        chat: [],
-      });
-    } catch (error) {
-      console.log("An error occurred in updating the user's records: ", error);
-    }
-  };
-
   // handler function for form submission
   const handleSubmit = async () => {
     // alert the user if no file is selected
@@ -101,6 +85,7 @@ function HomePage() {
 
     // Cannot handle multiple files yet. Maybe try this later.
     try {
+      setFileUploading(true);
       await uploadBytes(fileRef, selectedFile);
       let chat_id = crypto.randomUUID();
       console.log("File uploaded successfully.");
@@ -108,7 +93,6 @@ function HomePage() {
         `${backend_root}/download?id=${chat_id}&path=${filePath}`
       );
       console.log("Received response from backend: ", response);
-      await addUserFileAndChat(filePath, chat_id);
       navigate("/chat", {
         state: { id: chat_id, path: filePath },
       });
@@ -121,42 +105,65 @@ function HomePage() {
   };
 
   return (
-    <div className="home-page">
-      <div className="logo">
-        <img src="./QuetzAI_logo.png" alt="Logo" />
-      </div>
-
-      <div className="main-page">
-        <div className="document-upload">
-          <input
-            id="file-input"
-            className="document-upload-input"
-            type="file"
-            onChange={handleChange}
-          />
-          {/* Custom label that acts as the stylized input area */}
-          <label htmlFor="file-input" className="document-upload-input-label">
-            Upload your document here
-          </label>
-          <button className="document-upload-btn" onClick={handleSubmit}>
-            Upload File
-          </button>
+    <>
+      {!dataLoaded && (
+        <div className="loading-screen">
+          <div className="spinner"></div>
+          <p>Hang on tight... We're fetching your data!</p>
         </div>
+      )}
+      {fileUploading && (
+        <div className="loading-screen">
+          <div className="spinner"></div>
+          <p>We're studying your file... Give us a moment!</p>
+        </div>
+      )}
+      {dataLoaded && (
+        <div className="home-page">
+          <div className="logo">
+            <img src="./QuetzAI_logo.png" alt="Logo" />
+          </div>
 
-        {/*Div for displaying user's previous converstaions (implementation yet to be done)*/}
-        <div className="recent-conversations">
-          {chats.map((chat) => (
-            <div
-              className="recent-conversation"
-              key={chat.chat_id}
-              onClick={() => handleChatNavigation(chat.chat_id, chat.file_path)}
-            >
-              <p>Conversation with {chat.file_path.split("/").pop()}</p>
+          <div className="main-page">
+            <div className="document-upload">
+              <input
+                id="file-input"
+                className="document-upload-input"
+                type="file"
+                onChange={handleChange}
+              />
+              {/* Custom label that acts as the stylized input area */}
+              <label
+                htmlFor="file-input"
+                className="document-upload-input-label"
+              >
+                Upload your document here
+              </label>
+              <button className="document-upload-btn" onClick={handleSubmit}>
+                Upload File
+              </button>
             </div>
-          ))}
+
+            {/*Div for displaying user's previous converstaions (implementation yet to be done)*/}
+            <div className="recent-conversations">
+              {chats.map((chat) => {
+                return (
+                  <div
+                    className="recent-conversation"
+                    key={chat.chat_id}
+                    onClick={() =>
+                      handleChatNavigation(chat.chat_id, chat.file_path)
+                    }
+                  >
+                    <p>{chat.title}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

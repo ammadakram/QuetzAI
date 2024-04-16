@@ -1,12 +1,12 @@
 const storage = require('./firebase-config').storage;  // Assuming firebase-config is a local file
 const ref = require('firebase/storage').ref
 const getDownloadURL = require('firebase/storage').getDownloadURL
-const express = require('express');
 const spawn = require('child_process').spawn;
-const cors = require('cors');
 const axios = require('axios')
 const fs = require('fs');
 const pathModule = require('path');
+const express = require('express');
+const cors = require('cors');
 app = express()
 port = 8000
 
@@ -132,15 +132,21 @@ app.get('/generate', async (req, res) => {
     let chat_id = req.query.id
     let path = req.query.path
     let query = req.query.query
+    let title_generated = true;
+    let title = "";
     console.log("ID: ", chat_id)
     console.log("Path: ", path)
     console.log("Query: ", query)
     try {
+        title_generated = fs.existsSync(`history/${chat_id}`)
         result = await runGenerationScript(chat_id, path, query)
         console.log("Result: ", result)
-        res.json({result: result, error: ""})
+        if (!title_generated){
+            title = await runGenerationScript(chat_id, path, "Give me a very short title describing the conversation so far.")
+        }
+        res.json({result: result, error: "", title: title})
     } catch (error) {
-        res.status(500).json({result: "", error: error})
+        res.status(500).json({result: "", error: error, title: title})
     }
 })
 

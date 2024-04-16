@@ -3,7 +3,7 @@ import "./ChatPage.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { backend_root } from "../firebase-config";
-import { doc, arrayUnion, updateDoc, getDoc } from "firebase/firestore";
+import { doc, arrayUnion, updateDoc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 
 interface Message {
@@ -24,15 +24,48 @@ const ChatPage: React.FC = () => {
     db,
     `user_chat_history/${auth.currentUser?.uid}/history/${chat_id}`
   );
+  const docRef = doc(db, `user_info/${auth.currentUser?.uid}`);
 
   useEffect(() => {
     console.log("Fetching history!");
     fetchHistory();
   }, []);
 
+  const addUserFileAndChat = async (
+    filePath: string,
+    id: string,
+    title: string
+  ) => {
+    try {
+      const doc_ref = doc(db, "user_info", `${auth.currentUser?.uid}`);
+      const history_ref = doc(
+        db,
+        `user_chat_history/${auth.currentUser?.uid}/history/${id}`
+      );
+      await updateDoc(doc_ref, {
+        files: arrayUnion(filePath),
+        chats: arrayUnion(id),
+        chat_and_file: arrayUnion({
+          chat_id: chat_id,
+          file_path: path,
+          title: title,
+        }),
+      });
+      await setDoc(history_ref, {
+        chat: [],
+      });
+    } catch (error) {
+      console.log("An error occurred in updating the user's records: ", error);
+    }
+  };
+
   const fetchHistory = async () => {
     try {
       let historyDoc = await getDoc(chatHistoryRef);
+      if (!historyDoc.exists()) {
+        console.log("New chat with no history!");
+        return;
+      }
       let history = historyDoc.data()?.chat;
       console.log("Acquired history: ", history);
       history = history.map((elem: any, index: any) => {
@@ -83,6 +116,9 @@ const ChatPage: React.FC = () => {
       if (temp_res.data.result === "") {
         return temp_res.data.error;
       }
+      if (temp_res.data.title !== "") {
+        await addUserFileAndChat(path, chat_id, temp_res.data.title);
+      }
       return temp_res.data.result;
     } catch (error) {
       console.log("Error occurred during generation: ", error);
@@ -108,6 +144,7 @@ const ChatPage: React.FC = () => {
         .catch(() => {
           console.log("Error in updating history.");
         });
+      console.log(temp_res.title);
       simulateResponse(temp_res);
     }
   };
