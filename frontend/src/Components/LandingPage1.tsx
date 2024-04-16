@@ -1,15 +1,15 @@
-import "./LandingPage1.css";
-import { useNavigate } from "react-router";
+import './LandingPage1.css';
+import { useNavigate } from 'react-router';
 
 function LandingPage() {
   let navigate = useNavigate();
   return (
     <div className="app">
       <div className="left-div">
-        {/* <div className="header">
+        <div className="title">
           <img src="QuetzAI_logo.png" alt="QuetzAI Logo" className="logo" />
-          <h1>QuetzAI</h1>
-        </div> */}
+          QuetzAI
+        </div>
         <div className="animation-div">
           <p>animation goes here</p>
         </div>
@@ -20,7 +20,7 @@ function LandingPage() {
           <button
             className="login-btn"
             onClick={() => {
-              navigate("/login");
+              navigate('/login');
             }}
           >
             Login
@@ -28,7 +28,7 @@ function LandingPage() {
           <button
             className="signup-btn"
             onClick={() => {
-              navigate("/signup");
+              navigate('/signup');
             }}
           >
             Sign Up

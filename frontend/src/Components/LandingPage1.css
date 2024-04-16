@@ -4,6 +4,7 @@
 }
 
 .left-div {
+  /* position: relative; */
   width: 75vw;
   height: 100vh;
   color: rgb(221, 230, 237);
@@ -13,13 +14,32 @@
   align-items: center;
 }
 
+.title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 80px;
+  font-weight: 500;
+}
+
+.logo {
+  size: 100px;
+  padding: 0;
+}
+
 .login-div {
   display: flex;
   width: inherit;
   flex-direction: row; /* Align items in a row */
   align-items: center; /* Center-align the items horizontally */
+  justify-content: space-evenly;
   gap: 10px; /* Space between items */
-  margin-top: 25px; /* Add space above the container if needed */
+  margin-top: 20px; /* Add space above the container if needed */
 }
 
 .right-div {
@@ -29,8 +49,8 @@
   display: flex;
   flex-direction: column;
   margin-left: auto;
-  background-color: rgb(0, 0, 0);
   justify-content: center;
+  background-color: rgb(0, 0, 0);
   align-items: center;
 }
 
@@ -38,16 +58,15 @@
   border-width: 0;
   height: 52px;
   width: calc(
-    50% - 5px
+    42% - 5px
   ); /* Adjust width to fit container, considering the gap */
-  background-color: #1a2e49;
+  background-color: #0a1e65;
   color: #fff;
   align-items: center;
   justify-content: center;
   display: flex;
   border-radius: 8px;
   padding: 4px 16px;
-  margin-top: 25px;
   font-size: 18px;
   cursor: pointer;
 }
@@ -56,16 +75,15 @@
   border-width: 0;
   height: 52px;
   width: calc(
-    50% - 5px
+    42% - 5px
   ); /* Adjust width to fit container, considering the gap */
-  background-color: #1a2e49;
+  background-color: #3c46ff;
   color: #fff;
   align-items: center;
   justify-content: center;
   display: flex;
   border-radius: 8px;
   padding: 4px 16px;
-  margin-top: 25px;
   font-size: 18px;
   cursor: pointer;
 }
