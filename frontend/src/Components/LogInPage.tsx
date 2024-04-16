@@ -1,23 +1,27 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase-config";
+import './LogInPage.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase-config';
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-} from "@firebase/auth";
-import "./LogInPage.css";
+} from '@firebase/auth';
 
 function LogInPage() {
   const navigate = useNavigate();
   // Creating a GoogleAuthProvider instance from firebase
   const provider = new GoogleAuthProvider();
   // State for entered email
-  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState('');
   // State for password
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   // State to control display of password input
   const [displayPass, setDisplayPass] = useState(false);
+
+  const [emailEmpty, setEmailEmpty] = useState(false);
+  const [passEmpty, setPassEmpty] = useState(false);
+  const [passNotMatch, setPassNotMatch] = useState(false);
 
   // sign in existing user with email and password
   const signInExistingUser = async () => {
@@ -28,10 +32,11 @@ function LogInPage() {
     try {
       // Signing in with email and password
       await signInWithEmailAndPassword(auth, enteredEmail, password);
-      navigate("/home");
+      navigate('/home');
     } catch (err) {
       // Logging any errors that occur during sign-in
       console.error(err);
+      setPassNotMatch(true);
     }
   };
 
@@ -40,24 +45,55 @@ function LogInPage() {
     try {
       // Signing in with Google using popup
       await signInWithPopup(auth, provider);
-      navigate("/home");
+      setPassNotMatch(false);
+      navigate('/home');
     } catch (err) {
       // Logging any errors that occur during sign-in with Google
       console.error(err);
     }
   };
 
-  // handle key press events
-  const keyPressed = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    source: string
-  ) => {
-    if (event.key === "Enter" && source === "password") {
-      // Call signInExistingUser function if Enter key pressed in password input
-      signInExistingUser();
-    } else if (event.key === "Enter" && source === "email") {
-      // Display password input if Enter key pressed in email input
+  // check what inputs have been rendered when next button is pressed
+  const contPressed = () => {
+    if (!displayPass) {
+      checkInputs('email');
+    } else {
+      checkInputs('password');
+      // signInExistingUser();
+    }
+  };
+
+  const handleRendering = () => {
+    if (!displayPass) {
       setDisplayPass(true);
+      return false;
+    }
+    return true;
+  };
+
+  //Deals with empty inputs and rendering next input filed
+  const checkInputs = (from: string) => {
+    if (from === 'email') {
+      if (enteredEmail === '') {
+        setEmailEmpty(true);
+        if (passNotMatch) {
+          setPassNotMatch(false);
+        }
+      } else {
+        setEmailEmpty(false);
+        handleRendering();
+      }
+    }
+    if (from === 'password') {
+      if (password === '') {
+        setPassEmpty(true);
+        if (passNotMatch) {
+          setPassNotMatch(false);
+        }
+      } else {
+        setPassEmpty(false);
+        signInExistingUser();
+      }
     }
   };
 
@@ -67,96 +103,105 @@ function LogInPage() {
         <img src="./QuetzAI_logo_Inverted.png" alt="Logo" />
       </div>
       <div className="login-container">
-        <section className="container-wrapper">
-          <div className="title-box">
-            <h1 className="title-text">Welcome back</h1>
+        <div className="welcome-back-text">Welcome back</div>
+
+        {emailEmpty && (
+          <div className="popup">
+            <span className="popup-text">Please enter an email address</span>
           </div>
-          <div className="email-wrapper">
-            <input
-              className="email-input"
-              type="email"
-              name="email"
-              placeholder="email address"
-              onChange={(event) => {
-                event.preventDefault();
-                setEnteredEmail(event.target.value);
-              }}
-              onKeyDown={(event) => {
-                // Call keyPressed function with email
-                keyPressed(event, "email");
-              }}
-            ></input>{" "}
+        )}
+
+        {displayPass && !emailEmpty && !passEmpty && passNotMatch && (
+          <div className="popup">
+            <span className="popup-text">Invalid email or password</span>
           </div>
-          {/* Display password input if user has enetered email */}
-          {displayPass && (
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Please enter your password..."
-              className="password-input"
-              onChange={(event) => {
-                event.preventDefault();
-                setPassword(event.target.value);
-              }}
-              onKeyDown={(event) => {
-                // call keyPressed function with password
-                keyPressed(event, "password");
-              }}
-            />
-          )}
-          <button className="continue-btn" onClick={signInExistingUser}>
-            Continue
-          </button>{" "}
-          {/* trigger sign-in with email and password */}
-          <p className="sign-up">
-            <span>Don't have an account? </span>
-          </p>
-          <a
-            className="sign-up-txt"
-            onClick={() => {
-              // Navigate to the signup page
-              navigate("/signup");
+        )}
+
+        <input
+          className={`email-input ${
+            emailEmpty || passNotMatch ? 'email-input-empty' : ''
+          }`}
+          type="email"
+          name="email"
+          placeholder="email address"
+          onChange={(event) => {
+            event.preventDefault();
+            setEnteredEmail(event.target.value);
+          }}
+          onKeyDown={(event) => {
+            // Call keyPressed function with email
+            if (event.key === 'Enter') {
+              checkInputs('email');
+            }
+          }}
+        ></input>
+
+        {displayPass && passEmpty && (
+          <div className="popup">
+            <span className="popup-text">Please enter a password</span>
+          </div>
+        )}
+
+        {displayPass && !passEmpty && passNotMatch && (
+          <div className="popup">
+            <span className="popup-text">Invalid email or password</span>
+          </div>
+        )}
+
+        {/* Display password input if user has enetered email */}
+        {displayPass && (
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="enter password"
+            className={`password-input ${
+              passEmpty || passNotMatch ? 'password-input-empty' : ''
+            }`}
+            onChange={(event) => {
+              event.preventDefault();
+              setPassword(event.target.value);
             }}
-          >
-            Sign Up
-          </a>
-          <div className="or-line">
-            <div className="line"></div>
-            <div className="or-box">OR</div>
-            <div className="line"></div>
-          </div>
-          <div className="social-login-boxes">
-            <a
-              className="social-login-box google-box"
-              onClick={signInWithGoogle}
-            >
-              <img
-                src="./google_logo.png"
-                alt="Google Logo"
-                className="login-logo"
-              />
-              Continue with Google
-            </a>
-            <a className="social-login-box microsoft-box">
-              <img
-                src="./Microsoft_icon.svg.png"
-                alt="Microsoft Logo"
-                className="login-logo"
-              />
-              Continue with Microsoft
-            </a>
-            <a className="social-login-box facebook-box">
-              <img
-                src="./facebook_logo.webp"
-                alt="Facebook Logo"
-                className="login-logo"
-              />
-              Continue with Facebook
-            </a>
-          </div>
-        </section>
+            onKeyDown={(event) => {
+              // call keyPressed function with password
+              if (event.key === 'Enter') {
+                checkInputs('password');
+              }
+            }}
+          />
+        )}
+
+        {/* trigger sign-in with email and password */}
+        <div className="continue-box">
+          <button className="continue-btn" onClick={contPressed}>
+            Continue
+          </button>
+        </div>
       </div>
+
+      <div className="signup-text">
+        Don't have an account?{' '}
+        <a
+          className="sign-up-txt"
+          // Navigate to the signup page
+          onClick={() => {
+            navigate('/signup');
+          }}
+        >
+          Sign Up
+        </a>
+      </div>
+
+      <div className="or-line">
+        <div className="line"></div>
+        <div className="or-box">Or</div>
+        <div className="line"></div>
+      </div>
+
+      <a href="#" className="social-login-box" onClick={signInWithGoogle}>
+        <img src="./google_logo.png" alt="Google Logo" className="login-logo" />
+        Continue with Google
+      </a>
     </div>
   );
 }

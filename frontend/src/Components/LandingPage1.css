@@ -4,10 +4,11 @@
 }
 
 .header {
-  position: fixed; /* This makes the header fixed, so it stays at the top even when scrolling */
+  position: absolute; /* This makes the header fixed, so it stays at the top even when scrolling */
   top: 0; /* Aligns the header to the top of the viewport */
   left: 0; /* Aligns the header to the left of the viewport */
   display: flex; /* Use flexbox layout */
+  justify-content: center;
   align-items: center; /* Align items vertically in the center */
 }
 
@@ -16,8 +17,8 @@
   width: auto; /* Allows the width to adjust automatically based on the height */
 }
 
-.logo_text {
-  font-size: 40px;
+.logo-text {
+  font-size: 70px;
 }
 
 .left-div {
@@ -30,14 +31,13 @@
   align-items: center;
 }
 
-
-
 .login-div {
   display: flex;
   width: inherit;
-  flex-direction: row; /* Align items in a row */
+  flex-direction: row; /* Align yyyyitems in a row */
   align-items: center; /* Center-align the items horizontally */
-  gap: 10px; /* Space between items */
+  justify-content: space-evenly;
+  gap: 10px;
 }
 
 .right-div {
@@ -54,25 +54,25 @@
 
 .buttons {
   width: 95%;
-  height: 70%; 
-  display: flex; 
-  flex-direction: column; 
+  height: 70%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .get-started-txt {
-  font-size: 35px;
+  font-size: 40px;
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
-
 
 .signup-btn {
   border-width: 0;
   height: 52px;
-  width: 50%; 
-  background-color: #22436e;
+  /* width: 50%; */
+  width: calc(42% - 5px);
+  background-color: #3c46ff;
   color: #fff;
   align-items: center;
   justify-content: center;
@@ -87,8 +87,8 @@
 .login-btn {
   border-width: 0;
   height: 52px;
-  width: 50%; 
-  background-color: #22436e;
+  width: calc(42% - 5px);
+  background-color: #3c46ff;
   color: #fff;
   align-items: center;
   justify-content: center;
@@ -99,6 +99,3 @@
   font-size: 24px;
   cursor: pointer;
 }
-
-
-

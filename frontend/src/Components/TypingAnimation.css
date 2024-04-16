@@ -1,18 +1,10 @@
 .text-container {
-    display: inline-block;
-    vertical-align: middle;
-    white-space: nowrap;
-    width: 90%; /* Set maximum width to 90% of the left div */
-    position: relative; /* Ensure cursor positioning */
-  }
-  
-
-  @keyframes typing {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
-  }
-  
+  width: 100%;
+  color: #636bff; /* Change the text color if needed */
+  margin-left: 35px;
+  margin-right: 50px;
+  text-align: left;
+  font-size: 60px;
+  font-weight: 550;
+  display: inline-block;
+}

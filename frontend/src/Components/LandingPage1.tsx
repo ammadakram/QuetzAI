@@ -1,19 +1,27 @@
-import React from "react";
-import "./LandingPage1.css";
-import TypingAnimation from "./TypingAnimation"; // Import the TypingAnimation component
-import { useNavigate } from "react-router";
+import React from 'react';
+import './LandingPage1.css';
+import TypingAnimation from './TypingAnimation';
+import { useNavigate } from 'react-router';
 
 function LandingPage() {
   let navigate = useNavigate();
-  const texts = ["Welcome to QuetzAI", "Discover the power of AI", "Sign up now!"]; // Array of texts for typing animation
+
+  // Array of texts for typing animation
+  const texts = [
+    'What was Plato’s idea of a republic?',
+    'What are the key principles of agile software development?',
+    'Can you explain the concept of risk management in investing?',
+    'Can you explain the concept of judicial precedent?',
+  ];
+
   return (
     <div className="app">
       <div className="left-div">
         <div className="header">
           <img src="QuetzAI_logo.png" alt="QuetzAI Logo" className="logo" />
-          <h1 className="logo_text">QuetzAI</h1>
+          <h1 className="logo-text">QuetzAI</h1>
         </div>
-        <TypingAnimation texts={texts} /> {/* Include the TypingAnimation component with texts prop */}
+        <TypingAnimation texts={texts} />
       </div>
       <div className="right-div">
         <div className="buttons">
@@ -22,17 +30,17 @@ function LandingPage() {
             <button
               className="login-btn"
               onClick={() => {
-                navigate("/login");
+                navigate('/login');
               }}
-              >
+            >
               Login
             </button>
             <button
               className="signup-btn"
               onClick={() => {
-                navigate("/signup");
+                navigate('/signup');
               }}
-              >
+            >
               Sign Up
             </button>
           </div>
