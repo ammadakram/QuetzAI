@@ -27,4 +27,4 @@ const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 export const db = getFirestore(app);
-export const backend_root = "http://localhost:8000"; // This will change during hosting.
+export const backend_root = "http://quetzaiapi.up.railway.app"; // This will change during hosting.
