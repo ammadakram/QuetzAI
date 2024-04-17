@@ -17,7 +17,14 @@ const ChatPage: React.FC = () => {
   const path = location.state.path; // Get file path
   const chat_id = location.state.id; // Get chat id
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [showRegenerateButton, setShowRegenerateButton] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: crypto.randomUUID(),
+      text: "Hello! How may I assist you today?",
+      sender: "bot",
+    },
+  ]);
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState("idle");
   const chatHistoryRef = doc(
@@ -37,12 +44,11 @@ const ChatPage: React.FC = () => {
     title: string
   ) => {
     try {
-      const doc_ref = doc(db, "user_info", `${auth.currentUser?.uid}`);
       const history_ref = doc(
         db,
         `user_chat_history/${auth.currentUser?.uid}/history/${id}`
       );
-      await updateDoc(doc_ref, {
+      await updateDoc(docRef, {
         files: arrayUnion(filePath),
         chats: arrayUnion(id),
         chat_and_file: arrayUnion({
@@ -122,31 +128,46 @@ const ChatPage: React.FC = () => {
       return temp_res.data.result;
     } catch (error) {
       console.log("Error occurred during generation: ", error);
-      return error;
+      return "GEO";
     }
   };
 
   const handleKeyPress = async (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && query.trim() !== "") {
-      const newMessage: Message = {
-        id: crypto.randomUUID(),
-        text: query,
-        sender: "user",
-      };
-      setMessages([...messages, newMessage]);
-      setQuery("");
-      setResponse("processing");
-      let temp_res = await queryLLM();
-      updateChatHistory(newMessage.text, temp_res)
-        .then(() => {
-          console.log("Updated history successfully.");
-        })
-        .catch(() => {
-          console.log("Error in updating history.");
-        });
-      console.log(temp_res.title);
-      simulateResponse(temp_res);
+      generateOutput();
     }
+  };
+
+  const generateOutput = async () => {
+    const newMessage: Message = {
+      id: crypto.randomUUID(),
+      text: query,
+      sender: "user",
+    };
+    setResponse("processing");
+    setMessages([...messages, newMessage]);
+    let temp_res = await queryLLM();
+    if (temp_res === "GEO") {
+      setShowRegenerateButton(true);
+      setResponse("idle");
+      return;
+    }
+    setQuery("");
+    updateChatHistory(newMessage.text, temp_res)
+      .then(() => {
+        console.log("Updated history successfully.");
+      })
+      .catch(() => {
+        console.log("Error in updating history.");
+      });
+    console.log(temp_res.title);
+    simulateResponse(temp_res);
+  };
+
+  const handleRegenerateClick = async () => {
+    setShowRegenerateButton(false);
+    setResponse("processing");
+    generateOutput();
   };
 
   const simulateResponse = (llm_response: string) => {
@@ -180,6 +201,14 @@ const ChatPage: React.FC = () => {
               <span>.</span>
               <span>.</span>
             </div>
+          )}
+          {showRegenerateButton && (
+            <button
+              className="regenerate-button"
+              onClick={handleRegenerateClick}
+            >
+              Regenerate Response
+            </button>
           )}
         </div>
         <input

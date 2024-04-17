@@ -1,13 +1,12 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react';
-import { auth, backend_root } from '../firebase-config';
-import { storage } from '../firebase-config';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { useNavigate } from 'react-router-dom';
-import { db } from '../firebase-config';
-import axios from 'axios';
-import './HomePage.css';
-import SideBar from './SideBar';
-import { arrayUnion, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from "react";
+import { auth, backend_root } from "../firebase-config";
+import { storage } from "../firebase-config";
+import { ref, uploadBytes } from "firebase/storage";
+import { useNavigate, Link } from "react-router-dom";
+import { db } from "../firebase-config";
+import axios from "axios";
+import "./HomePage.css";
+import { doc, getDoc } from "firebase/firestore";
 
 interface FileAndChat {
   chat_id: string;
@@ -19,7 +18,7 @@ function HomePage() {
   // state to store the selected file
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [chats, setChats] = useState<FileAndChat[]>([]);
-  const [fileNames, setFileNames] = useState(['']);
+  const [fileNames, setFileNames] = useState([""]);
   const navigate = useNavigate();
   const chatsRef = doc(db, `user_info/${auth.currentUser?.uid}`);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -29,7 +28,7 @@ function HomePage() {
     try {
       let chats_temp = await getDoc(chatsRef);
       if (!chats_temp.exists()) {
-        console.log('Cannot fetch user data!');
+        console.log("Cannot fetch user data!");
         return;
       }
 
@@ -38,19 +37,19 @@ function HomePage() {
         setChats(chatData);
         let fileNamesTemp = chatData.map((elem: any) => {
           let file_path: string = elem.file_path;
-          let file_name = file_path.split('/').slice(-1, -1);
+          let file_name = file_path.split("/").slice(-1, -1);
           return file_name;
         });
         setFileNames(fileNamesTemp);
       }
       setDataLoaded(true);
     } catch (error) {
-      console.log('Could not fetch User data due to: ', error);
+      console.log("Could not fetch User data due to: ", error);
     }
   };
 
   const handleChatNavigation = async (chat_id: string, file_path: string) => {
-    navigate('/chat', {
+    navigate("/chat", {
       state: { id: chat_id, path: file_path },
     });
   };
@@ -76,12 +75,12 @@ function HomePage() {
   // handler function for form submission
   const handleSubmit = async () => {
     // alert the user if no file is selected
-    console.log('Inside handle submit!');
+    console.log("Inside handle submit!");
     if (!selectedFile) {
-      alert('Please select a file to upload.');
+      alert("Please select a file to upload.");
       return;
     }
-    console.log('Proceeding with upload.');
+    console.log("Proceeding with upload.");
     const filePath = `files/${auth.currentUser?.uid}/${selectedFile.name}`;
     const fileRef = ref(storage, filePath);
 
@@ -90,17 +89,17 @@ function HomePage() {
       setFileUploading(true);
       await uploadBytes(fileRef, selectedFile);
       let chat_id = crypto.randomUUID();
-      console.log('File uploaded successfully.');
+      console.log("File uploaded successfully.");
       let response = await axios.get(
         `${backend_root}/download?id=${chat_id}&path=${filePath}`
       );
-      console.log('Received response from backend: ', response);
-      navigate('/chat', {
+      console.log("Received response from backend: ", response);
+      navigate("/chat", {
         state: { id: chat_id, path: filePath },
       });
     } catch (error) {
       console.log(
-        'An error occurred during file upload or download: \n',
+        "An error occurred during file upload or download: \n",
         error
       );
     }
@@ -123,14 +122,14 @@ function HomePage() {
 
       {dataLoaded && !fileUploading && (
         <div className="home-page">
-          <div className="header-home">
-            <div className="sidebar">
-              <SideBar />
-            </div>
-            <div className="logo-home">
-              <img src="./QuetzAI_logo.png" alt="Logo" />
-            </div>
-          </div>
+          <nav className="nav-bar">
+            <Link to="/home" className="nav-link">
+              Home
+            </Link>
+            <Link to="/folder" className="nav-link">
+              Folder
+            </Link>
+          </nav>
 
           <div className="main-page">
             <div className="document-upload">

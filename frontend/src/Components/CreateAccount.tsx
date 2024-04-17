@@ -1,16 +1,9 @@
 import "./CreateAccount.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
 import { useState } from "react";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
-import { all } from "axios";
 
 function CreateAccountPage() {
   const navigate = useNavigate();

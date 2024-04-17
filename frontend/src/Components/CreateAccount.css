@@ -1,4 +1,4 @@
-General styling for the SignupPage .SignupPage {
+.SignupPage {
   display: flex;
   flex-direction: column;
   align-items: center;
