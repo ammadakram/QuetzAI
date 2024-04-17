@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { auth, backend_root } from "../firebase-config";
 import { storage } from "../firebase-config";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase-config";
 import axios from "axios";

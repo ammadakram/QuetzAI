@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ChatPage.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { backend_root } from "../firebase-config";
 import { doc, arrayUnion, updateDoc, getDoc, setDoc } from "firebase/firestore";
@@ -16,7 +16,7 @@ const ChatPage: React.FC = () => {
   const location = useLocation();
   const path = location.state.path; // Get file path
   const chat_id = location.state.id; // Get chat id
-
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [query, setQuery] = useState("");
   const [response, setResponse] = useState("idle");
@@ -160,30 +160,38 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <div className="chat-container">
-      <div className="chat-box">
-        {messages.map((message) => (
-          <div key={message.id} className={`message ${message.sender}-message`}>
-            {message.text}
-          </div>
-        ))}
-        {response === "processing" && (
-          <div className="loading-message bot-message">
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
-          </div>
-        )}
+    <>
+      <button className="back-button" onClick={() => navigate("/home")}>
+        &#x2190;
+      </button>
+      <div className="chat-container">
+        <div className="chat-box">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`message ${message.sender}-message`}
+            >
+              {message.text}
+            </div>
+          ))}
+          {response === "processing" && (
+            <div className="loading-message bot-message">
+              <span>.</span>
+              <span>.</span>
+              <span>.</span>
+            </div>
+          )}
+        </div>
+        <input
+          type="text"
+          className="user-input"
+          placeholder="Ask me anything..."
+          value={query}
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+        />
       </div>
-      <input
-        type="text"
-        className="user-input"
-        placeholder="Ask me anything..."
-        value={query}
-        onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
-      />
-    </div>
+    </>
   );
 };
 

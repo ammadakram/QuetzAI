@@ -1,25 +1,23 @@
-import './CreateAccount.css';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { auth } from '../firebase-config';
+import "./CreateAccount.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { auth } from "../firebase-config";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithPopup,
-} from 'firebase/auth';
-import { useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../firebase-config';
-import { all } from 'axios';
+} from "firebase/auth";
+import { useState } from "react";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase-config";
+import { all } from "axios";
 
 function CreateAccountPage() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const provider = new GoogleAuthProvider();
 
   // State for various reasons.
-  const [userName, setUserName] = useState('');
-  const [confirmUserName, setConfirmUserName] = useState('');
+  const [userName, setUserName] = useState("");
+  const [confirmUserName, setConfirmUserName] = useState("");
 
   const [displayConfirm, setDisplayConfirm] = useState(false);
 
@@ -28,11 +26,19 @@ function CreateAccountPage() {
 
   const [notMatch, setNotMatch] = useState(false);
 
-  const goToHome = () => {
+  const goToHome = async () => {
     if (userNameEmpty || confirmEmpty || notMatch) {
       return;
     }
-    navigate('/home');
+    try {
+      let docRef = doc(db, `user_info/${auth.currentUser?.uid}`);
+      await updateDoc(docRef, {
+        username: userName,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    navigate("/home");
   };
 
   const handleRendering = () => {
@@ -53,17 +59,19 @@ function CreateAccountPage() {
   // check what inputs have been rendered when next button is pressed
   const nextPressed = () => {
     if (!displayConfirm) {
-      checkInputs('username');
+      checkInputs("username");
     } else {
-      checkInputs('confirm');
-      //   goToHome();
+      checkInputs("confirm");
+      if (!userNameEmpty && !confirmEmpty && !notMatch) {
+        goToHome();
+      }
     }
   };
 
   //Deals with empty inputs and rendering next input filed
   const checkInputs = (from: string) => {
-    if (from === 'username') {
-      if (userName === '') {
+    if (from === "username") {
+      if (userName === "") {
         setUserNameEmpty(true);
       } else {
         setUserNameEmpty(false);
@@ -71,8 +79,8 @@ function CreateAccountPage() {
       }
     }
 
-    if (from === 'confirm') {
-      if (confirmUserName === '') {
+    if (from === "confirm") {
+      if (confirmUserName === "") {
         setConfirmEmpty(true);
         if (notMatch) {
           setNotMatch(false);
@@ -111,15 +119,15 @@ function CreateAccountPage() {
           name="username"
           placeholder="user name"
           className={`email-input ${
-            userNameEmpty || notMatch ? 'email-input-empty' : ''
+            userNameEmpty || notMatch ? "email-input-empty" : ""
           }`}
           onChange={(event) => {
             event.preventDefault();
             setUserName(event.target.value);
           }}
           onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              checkInputs('username');
+            if (event.key === "Enter") {
+              checkInputs("username");
             }
           }}
         />
@@ -143,15 +151,15 @@ function CreateAccountPage() {
             name="username"
             placeholder="confirm user name"
             className={`password-input ${
-              confirmEmpty || notMatch ? 'password-input-empty' : ''
+              confirmEmpty || notMatch ? "password-input-empty" : ""
             }`}
             onChange={(event) => {
               event.preventDefault();
               setConfirmUserName(event.target.value);
             }}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                checkInputs('confirm');
+              if (event.key === "Enter") {
+                checkInputs("confirm");
               }
             }}
           />

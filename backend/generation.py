@@ -72,7 +72,7 @@ tools = [retriever_tool]
 # This is an arithmetic tool which simply performs any calculation the user might want ot perform.
 
 
-@toolt
+@tool
 def math_tool(query):
     "Takes in a arithmetic equation as query and solves the equation in a step-by-step manner."
     llm_math_chain = LLMMathChain.from_llm(llm, verbose=False)

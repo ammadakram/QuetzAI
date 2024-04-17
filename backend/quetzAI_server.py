@@ -193,10 +193,9 @@ def generation(chat_id: str, paths: str, query: str):
     title_query = "Give me a very short title describing the conversation so far."
 
     # This is the retrieval tool that searches the documents and fetches chunks most similar to user query using FAISS. DO NOT CHANGE THIS FUNCTION DEFINITION SINCE THIS IS EXPECTED BY LANGCHAIN API.
-
     @tool
     def retriever_tool(query):
-        "Searches and returns relevant documents to user queries regarding the uploaded document"
+        "Searches and returns relevant documents to user queries regarding the uploaded document. In case the user asks for a summary, return all chunks."
         docs = retriever.get_relevant_documents(query)
         return docs
 
@@ -233,20 +232,22 @@ def generation(chat_id: str, paths: str, query: str):
     now = datetime.datetime.now()
     current_year = now.year
     sys_prompt = f"""
-    It is the year {current_year}, and your training data ends at 2023, meaning you do not have proper knowledge about current events. 
+    The CURRENT_YEAR IS: {current_year}. 
     You are an agent who has a second brain, namely its retrieval tool.\
     You make use of this tool along with your search and math tools to answer user queries.\
 
     Whenever given a query, follow this protocol to answer:\
     1. Always call your retrieval tool to fetch the data relevant to answering the user query.\
-    2. Identify wether you need to use the search tool or not. ONLY USE THE SEARCH TOOL IF NO DATA IS RETURNED BY RETRIEVAL TOOL.\
+    2. Identify wether you need to use the search tool or not. You can use search_tool for these 2 cases:\
+        i. ALWAYS USE THE SEARCH TOOL IF USER QUERY ASKS ABOUT CURRENT EVENTS (remeber that it is {current_year} today).\
+        ii. ALWAYS USE THE SEARCH TOOL IF NO DATA IS RETURNED BY RETRIEVAL TOOL.\
     3. Augment the retrieved results and answer the user query.
 
     Follow these instructions to format your final response:
     1. Be concise. 
     2. Follow the protocol mentioned above AT ALL TIMES.
-    3. Before using the search tool ask the user explicitly if they would like you to search the web for the answer.\
-    Only use the search tool if they say yes, otherwise do not. 
+    3. Before using the search tool ask the user explicitly.\
+    if the reply is a yes only then use the search tool otherwise do not use it.
     """
 
     # Here we are simply wrapping the prompts to feed into the model
@@ -348,4 +349,5 @@ def generate():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    port = int(os.getenv('PORT', 8000))
+    app.run(debug=True, host="0.0.0.0", port=8000)

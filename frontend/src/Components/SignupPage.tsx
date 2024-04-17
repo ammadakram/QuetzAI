@@ -1,24 +1,23 @@
-import './SignupPage.css';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { auth } from '../firebase-config';
+import "./SignupPage.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { auth } from "../firebase-config";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-} from 'firebase/auth';
-import { useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../firebase-config';
-import { all } from 'axios';
+} from "firebase/auth";
+import { useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 function SignupPage() {
   const navigate = useNavigate();
   const location = useLocation();
   // State for various reasons.
   const provider = new GoogleAuthProvider();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [displayPass, setDisplayPass] = useState(false);
   const [displayConfirmPass, setDisplayConfirm] = useState(false);
 
@@ -28,12 +27,22 @@ function SignupPage() {
   const [passNotMatch, setPassNotMatch] = useState(false);
 
   const createUserRecord = async () => {
-    await setDoc(doc(db, 'user_info', `${auth.currentUser?.uid}`), {
-      username: auth.currentUser?.email,
-      chats: [],
-      files: [],
-      chat_and_file: [],
-    });
+    let retries = 0;
+    let success = false;
+    while (retries !== 10 && !success) {
+      retries++;
+      try {
+        await setDoc(doc(db, `user_info/${auth.currentUser?.uid}`), {
+          username: auth.currentUser?.email,
+          chats: [],
+          files: [],
+          chat_and_file: [],
+        });
+        success = true;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const handleRendering = () => {
@@ -58,11 +67,11 @@ function SignupPage() {
   // check what inputs have been rendered when next button is pressed
   const nextPressed = () => {
     if (!displayPass) {
-      checkInputs('email');
+      checkInputs("email");
     } else if (!displayConfirmPass) {
-      checkInputs('password');
+      checkInputs("password");
     } else {
-      checkInputs('confirm_password');
+      checkInputs("confirm_password");
       signUpWithEmailAndPassword();
     }
   };
@@ -77,7 +86,7 @@ function SignupPage() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       await createUserRecord();
-      navigate('/home');
+      navigate("/create-acc");
     } catch (err) {
       console.error(err);
     }
@@ -88,7 +97,7 @@ function SignupPage() {
     try {
       await signInWithPopup(auth, provider);
       await createUserRecord();
-      navigate('/home');
+      navigate("/create-acc");
     } catch (err) {
       console.error(err);
     }
@@ -96,16 +105,16 @@ function SignupPage() {
 
   //Deals with empty inputs and rendering next input filed
   const checkInputs = (from: string) => {
-    if (from === 'email') {
-      if (email === '') {
+    if (from === "email") {
+      if (email === "") {
         setEmailEmpty(true);
       } else {
         setEmailEmpty(false);
         handleRendering();
       }
     }
-    if (from === 'password') {
-      if (password === '') {
+    if (from === "password") {
+      if (password === "") {
         setPassEmpty(true);
         if (passNotMatch) {
           setPassNotMatch(false);
@@ -115,8 +124,8 @@ function SignupPage() {
         handleRendering();
       }
     }
-    if (from === 'confirm_password') {
-      if (confirmPassword === '') {
+    if (from === "confirm_password") {
+      if (confirmPassword === "") {
         setConfirmEmpty(true);
         if (passNotMatch) {
           setPassNotMatch(false);
@@ -148,14 +157,14 @@ function SignupPage() {
           name="email"
           placeholder="email address"
           // className="email-input"
-          className={`email-input ${emailEmpty ? 'email-input-empty' : ''}`}
+          className={`email-input ${emailEmpty ? "email-input-empty" : ""}`}
           onChange={(event) => {
             event.preventDefault();
             setEmail(event.target.value);
           }}
           onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              checkInputs('email');
+            if (event.key === "Enter") {
+              checkInputs("email");
             }
           }}
         />
@@ -179,15 +188,15 @@ function SignupPage() {
             name="password"
             placeholder="enter password"
             className={`password-input ${
-              passEmpty || passNotMatch ? 'password-input-empty' : ''
+              passEmpty || passNotMatch ? "password-input-empty" : ""
             }`}
             onChange={(event) => {
               event.preventDefault();
               setPassword(event.target.value);
             }}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                checkInputs('password');
+              if (event.key === "Enter") {
+                checkInputs("password");
               }
             }}
           />
@@ -212,15 +221,15 @@ function SignupPage() {
             name="password"
             placeholder="confirm password"
             className={`password-input ${
-              confirmEmpty || passNotMatch ? 'password-input-empty' : ''
+              confirmEmpty || passNotMatch ? "password-input-empty" : ""
             }`}
             onChange={(event) => {
               event.preventDefault();
               setConfirmPassword(event.target.value);
             }}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                checkInputs('confirm_password');
+              if (event.key === "Enter") {
+                checkInputs("confirm_password");
               }
             }}
           />
@@ -234,11 +243,11 @@ function SignupPage() {
       </div>
 
       <div className="login-text">
-        Already have an account?{' '}
+        Already have an account?{" "}
         <a
           className="log-in-txt"
           onClick={() => {
-            navigate('/login');
+            navigate("/login");
           }}
         >
           Log In
