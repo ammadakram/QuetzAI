@@ -37,16 +37,6 @@ import datetime
 
 warnings.filterwarnings('ignore')
 
-# used to load the pdfs
-
-# used to create the retrieval tool
-
-# used to create the memory
-
-# used to create the prompt template
-
-# used to create the agent executor
-
 
 # Setting up the various API Keys that we need
 openai_api_key = open("API_key.txt").read().strip()
@@ -82,7 +72,7 @@ tools = [retriever_tool]
 # This is an arithmetic tool which simply performs any calculation the user might want ot perform.
 
 
-@tool
+@toolt
 def math_tool(query):
     "Takes in a arithmetic equation as query and solves the equation in a step-by-step manner."
     llm_math_chain = LLMMathChain.from_llm(llm, verbose=False)
