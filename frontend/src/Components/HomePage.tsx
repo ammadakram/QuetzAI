@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { auth, backend_root } from "../firebase-config";
-import { storage } from "../firebase-config";
-import { ref, uploadBytes } from "firebase/storage";
-import { useNavigate, Link } from "react-router-dom";
-import { db } from "../firebase-config";
-import axios from "axios";
-import "./HomePage.css";
-import { doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from 'react';
+import { auth, backend_root } from '../firebase-config';
+import { storage } from '../firebase-config';
+import { ref, uploadBytes } from 'firebase/storage';
+import { useNavigate, Link } from 'react-router-dom';
+import { db } from '../firebase-config';
+import axios from 'axios';
+import './HomePage.css';
+import { doc, getDoc } from 'firebase/firestore';
 
 interface FileAndChat {
   chat_id: string;
@@ -18,17 +18,19 @@ function HomePage() {
   // state to store the selected file
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [chats, setChats] = useState<FileAndChat[]>([]);
-  const [fileNames, setFileNames] = useState([""]);
+  const [fileNames, setFileNames] = useState(['']);
   const navigate = useNavigate();
   const chatsRef = doc(db, `user_info/${auth.currentUser?.uid}`);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [fileUploading, setFileUploading] = useState(false);
 
+  const [numRecent, setNumRecent] = useState(0);
+
   const fetchChats = async () => {
     try {
       let chats_temp = await getDoc(chatsRef);
       if (!chats_temp.exists()) {
-        console.log("Cannot fetch user data!");
+        console.log('Cannot fetch user data!');
         return;
       }
 
@@ -37,19 +39,19 @@ function HomePage() {
         setChats(chatData);
         let fileNamesTemp = chatData.map((elem: any) => {
           let file_path: string = elem.file_path;
-          let file_name = file_path.split("/").slice(-1, -1);
+          let file_name = file_path.split('/').slice(-1, -1);
           return file_name;
         });
         setFileNames(fileNamesTemp);
       }
       setDataLoaded(true);
     } catch (error) {
-      console.log("Could not fetch User data due to: ", error);
+      console.log('Could not fetch User data due to: ', error);
     }
   };
 
   const handleChatNavigation = async (chat_id: string, file_path: string) => {
-    navigate("/chat", {
+    navigate('/chat', {
       state: { id: chat_id, path: file_path },
     });
   };
@@ -75,12 +77,12 @@ function HomePage() {
   // handler function for form submission
   const handleSubmit = async () => {
     // alert the user if no file is selected
-    console.log("Inside handle submit!");
+    console.log('Inside handle submit!');
     if (!selectedFile) {
-      alert("Please select a file to upload.");
+      alert('Please select a file to upload.');
       return;
     }
-    console.log("Proceeding with upload.");
+    console.log('Proceeding with upload.');
     const filePath = `files/${auth.currentUser?.uid}/${selectedFile.name}`;
     const fileRef = ref(storage, filePath);
 
@@ -89,17 +91,17 @@ function HomePage() {
       setFileUploading(true);
       await uploadBytes(fileRef, selectedFile);
       let chat_id = crypto.randomUUID();
-      console.log("File uploaded successfully.");
+      console.log('File uploaded successfully.');
       let response = await axios.get(
         `${backend_root}/download?id=${chat_id}&path=${filePath}`
       );
-      console.log("Received response from backend: ", response);
-      navigate("/chat", {
+      console.log('Received response from backend: ', response);
+      navigate('/chat', {
         state: { id: chat_id, path: filePath },
       });
     } catch (error) {
       console.log(
-        "An error occurred during file upload or download: \n",
+        'An error occurred during file upload or download: \n',
         error
       );
     }
@@ -131,12 +133,24 @@ function HomePage() {
             </Link>
           </nav>
 
+          <div className="header-home">
+            <img
+              className="sidebar-img"
+              src="./icons8-menu-500.svg"
+              alt="side bar"
+            />
+            <div className="logo-home">
+              <img src="./QuetzAI_logo.png" alt="Logo" />
+            </div>
+          </div>
+
           <div className="main-page">
             <div className="document-upload">
               <input
                 id="file-input"
                 className="document-upload-input"
                 type="file"
+                accept=".pdf"
                 onChange={handleChange}
               />
               {/* Custom label that acts as the stylized input area */}
@@ -162,8 +176,8 @@ function HomePage() {
 
             {/*Div for displaying user's previous converstaions (implementation yet to be done)*/}
             <div className="recent-conversations">
-              {chats.map((chat) => {
-                return (
+              {chats.length > 0 ? (
+                chats.slice(Math.max(chats.length - 4, 0)).map((chat) => (
                   <div
                     className="recent-conversation"
                     key={chat.chat_id}
@@ -171,10 +185,16 @@ function HomePage() {
                       handleChatNavigation(chat.chat_id, chat.file_path)
                     }
                   >
-                    <p>{chat.title}</p>
+                    <p>
+                      {chat.title.length > 100
+                        ? chat.title.slice(0, 99) + '...'
+                        : chat.title}
+                    </p>
                   </div>
-                );
-              })}
+                ))
+              ) : (
+                <p className="no-conversations">No recent conversations!</p>
+              )}
             </div>
           </div>
         </div>

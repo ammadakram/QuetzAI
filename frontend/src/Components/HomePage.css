@@ -11,14 +11,24 @@
 .header-home {
   display: flex;
   width: 100vw;
-  height: 20vh;
   flex-direction: row;
   justify-content: flex-start;
   padding: 0;
+  margin-left: 50px;
+}
+
+.sidebar-img {
+  height: 45px;
+  width: auto;
+  margin-top: 20px;
+}
+
+.sidebar-img:hover {
+  cursor: pointer;
 }
 
 .logo-home {
-  margin-left: 41vw;
+  margin-left: 41%;
 }
 
 .logo-home img {
@@ -37,32 +47,41 @@
 .recent-conversations {
   display: flex;
   flex-wrap: wrap; /* Allow multiple rows if more elements */
-  justify-content: space-around; /* Evenly space around for better aesthetics */
+  justify-content: space-evenly; /* Evenly space around for better aesthetics */
   align-items: flex-start; /* Align items at the start of the flex container */
-  margin-top: auto;
-  margin-bottom: 10%;
-  width: 90%; /* Limit the width to centralize content */
+  margin-top: 50px;
+  width: 80%; /* Limit the width to centralize content */
 }
 
 .recent-conversation {
-  width: 18%; /* Width of each chat preview */
-  min-height: 180px; /* Minimum height of each container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10%;
+  height: 240px;
   border-radius: 6px;
   background-color: #9db2bf;
   overflow: hidden; /* Ensures no spilling of content */
+  /* padding-top: 20px; */
+  padding-left: 15px;
+  /* padding-bottom: 40px; */
+  padding-right: 20px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-  transition: transform 0.3s ease; /* Smooth transform on hover */
+  transition: transform 0.3s ease;
 }
 
 .recent-conversation:hover {
   transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-.recent-conversation img {
-  width: 100%; /* Ensure image covers the full container width */
-  height: 100%; /* Ensure image covers the full container height */
-  object-fit: cover; /* Cover the container while maintaining aspect ratio */
+.recent-conversation p {
+  font-size: 20px;
+}
+
+.no-conversations {
+  color: #c7c7c7;
+  font-size: 40px;
 }
 
 .document-upload {
@@ -147,29 +166,4 @@
 .loading-screen p {
   margin-top: 20px;
   font-size: 16px;
-}
-
-.nav-bar {
-  display: flex;
-  justify-content: center;
-  background-color: #1a2e49; /* Consistent with the overall page background */
-  padding: 10px 20px;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
-}
-
-.nav-link {
-  text-decoration: none;
-  color: #ffffff; /* Light color for contrast on dark background */
-  font-weight: 500;
-  padding: 10px 25px;
-  font-size: 18px; /* Slightly larger text for better readability */
-  transition: color 0.3s, background-color 0.3s; /* Smooth transition for hover effects */
-  border-radius: 5px; /* Rounded corners */
-  margin: 0 10px; /* Space between links */
-}
-
-.nav-link:hover, .nav-link:focus {
-  color: #1a2e49; /* Dark text on hover */
-  background-color: #9db2bf; /* Light background on hover for visibility */
 }
