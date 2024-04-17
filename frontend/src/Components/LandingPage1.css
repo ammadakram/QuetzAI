@@ -12,9 +12,13 @@
   align-items: center; /* Align items vertically in the center */
 }
 
-.logo {
-  height: 40px; /* Adjust the height of the logo as needed */
-  width: auto; /* Allows the width to adjust automatically based on the height */
+.logo-landing {
+  height: 140px;
+  width: auto;
+}
+
+.logo-text {
+  font-size: 70px;
 }
 
 .logo-text {

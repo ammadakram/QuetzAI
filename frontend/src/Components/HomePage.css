@@ -2,27 +2,42 @@
   font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #1a2e49;
   height: 100vh;
+  width: 100vw;
 }
 
-.logo {
-  height: auto;
+.header-home {
+  display: flex;
+  width: 100vw;
+  height: 20vh;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.sidebar {
+  align-self: flex-start;
+  margin-left: 10px;
+  margin-top: 30px;
+}
+
+.logo-home {
+  margin-left: 41vw;
+}
+
+.logo-home img {
+  height: 140px;
   width: auto;
-  align-self: center;
-  align-items: center;
-}
-
-.logo img {
-  width: 140px;
 }
 
 .main-page {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2%;
-  height: 100%;
+  width: 100vw;
 }
 
 .recent-conversations {
@@ -60,7 +75,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 230px;
 }
 
 .document-upload-input {
@@ -72,21 +87,28 @@
 }
 
 .document-upload-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  z-index: 1;
-  width: 90%;
-  background-color: #ffffff;
-  color: #333;
-  border: 2px solid #007bff;
+  /* z-index: 1; */
+  width: 40%;
+  height: 24%;
+  color: #c7c7c7;
+  border: 3px dashed #c7c7c7;
   border-radius: 5px;
-  text-align: center;
   line-height: 36px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 28px;
+}
+
+.document-upload-input-label:hover {
+  color: #9a9a9a;
+  border: 2px dashed #9a9a9a;
 }
 
 .document-upload-btn {
-  background-color: #007bff;
+  background-color: #3c46ff;
   color: #ffffff;
   border: none;
   border-radius: 5px;
@@ -120,8 +142,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-screen p {
