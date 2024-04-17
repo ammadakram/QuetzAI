@@ -10,8 +10,9 @@
 }
 
 .logo {
+  height: auto;
+  width: auto;
   padding: 1rem;
-  width: 100%;
 }
 
 .logo img {

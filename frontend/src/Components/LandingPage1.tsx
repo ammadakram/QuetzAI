@@ -18,7 +18,11 @@ function LandingPage() {
     <div className="app">
       <div className="left-div">
         <div className="header">
-          <img src="QuetzAI_logo.png" alt="QuetzAI Logo" className="logo" />
+          <img
+            src="QuetzAI_logo.png"
+            alt="QuetzAI Logo"
+            className="logo-landing"
+          />
           <h1 className="logo-text">QuetzAI</h1>
         </div>
         <TypingAnimation texts={texts} />
