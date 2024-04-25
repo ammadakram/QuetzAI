@@ -1,0 +1,2 @@
+Human: can you give me an introduction to streaming algorithms
+AI: Streaming algorithms are algorithms designed to process data streams in a space-efficient manner. These algorithms are focused on processing massive data streams with limited memory resources. The emphasis is on foundational algorithms that are simple enough to be presented in a classroom setting, suitable for advanced undergraduate students. Additionally, streaming algorithms aim to achieve efficient processing of data streams while using minimal space.
