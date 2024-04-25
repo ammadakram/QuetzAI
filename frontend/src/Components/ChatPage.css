@@ -19,8 +19,6 @@
   background-color: #9db2bf00;
   border-radius: 10px;
   overflow: hidden; /* Ensures no content overflows */
-  /* border: 1px solid #ddd; */
-  /* box-shadow: 0 0 20px rgba(124, 124, 124, 0.3); */
 }
 
 .chat-box {
@@ -31,10 +29,10 @@
   flex-direction: column;
   background: #9db2bf; /* Optional: adds a different background inside the chat */
   border-radius: 10px;
+  width: 100%;
 }
 
 .user-input {
-  width: 100%;
   padding: 15px 20px;
   font-size: 1.2em; /* Larger font size for better readability */
   border: none;
@@ -42,9 +40,7 @@
   outline: none;
   border-radius: 10px;
   margin-top: 20px;
-  margin-left: 10px;
-  margin-right: 10px;
-  /* margin-bottom: 10px; */
+  width: 100%;
 }
 
 .message {
@@ -123,16 +119,17 @@
   border-radius: 30%;
   width: 40px;
   height: 40px;
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 16px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: background 0.3s;
+  transition: all 0.3s ease;
 }
 
 .back-button:hover {
   background: #0056b3;
+  transform: scale(1.05);
 }

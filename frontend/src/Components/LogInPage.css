@@ -78,6 +78,7 @@
   width: 100%;
   padding: 15px 20px;
   background-color: #27374d; /* Example primary color */
+  transition: all 0.3s ease-in-out;
   color: white;
   border: none;
   border-radius: 8px;
@@ -86,6 +87,7 @@
 
 .continue-btn:hover {
   background-color: #0056b3;
+  transition: all 0.3s ease-in-out;
 }
 
 .signup-text {
@@ -139,12 +141,14 @@
   border: 1px solid #ccc;
   border-radius: 8px; /* Add border radius */
   background-color: white; /* Set background color to white */
+  transition: all 0.3s ease-in-out;
   text-decoration: none; /* Remove default anchor text decoration */
   color: #27374d;
 }
 
 .social-login-box:hover {
   background-color: #f0f0f0; /* Change background color on hover */
+  transition: all 0.3s ease-in-out;
 }
 
 .login-logo {

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { backend_root } from '../firebase-config';
 import { doc, arrayUnion, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
+import { Tooltip } from 'antd';
 
 interface Message {
   id: string;
@@ -182,9 +183,11 @@ const ChatPage: React.FC = () => {
 
   return (
     <div className="chat-page">
-      <button className="back-button" onClick={() => navigate('/home')}>
-        &#x2190;
-      </button>
+      <Tooltip placement="right" title={<span>Go to home</span>}>
+        <button className="back-button" onClick={() => navigate('/home')}>
+          &#x2190;
+        </button>
+      </Tooltip>
       <div className="chat-container">
         <div className="chat-box">
           {messages.map((message) => (

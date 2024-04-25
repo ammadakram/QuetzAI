@@ -71,28 +71,11 @@
   margin-bottom: 20px;
 }
 
-.signup-btn {
-  border-width: 0;
-  height: 52px;
-  /* width: 50%; */
-  width: calc(42% - 5px);
-  background-color: #3c46ff;
-  color: #fff;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  border-radius: 8px;
-  padding: 4px 16px;
-  margin-top: 25px;
-  font-size: 24px;
-  cursor: pointer;
-}
-
+.signup-btn,
 .login-btn {
   border-width: 0;
   height: 52px;
   width: calc(42% - 5px);
-  background-color: #3c46ff;
   color: #fff;
   align-items: center;
   justify-content: center;
@@ -102,4 +85,16 @@
   margin-top: 25px;
   font-size: 24px;
   cursor: pointer;
+  background-color: #3c46ff;
+  transition: all 0.5s ease-in-out;
+}
+
+.signup-btn:hover,
+.login-btn:hover {
+  background-color: #0a1e65;
+  /* background-color: #7895ff; */
+  /* transform: translateY(-3px); */
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 8px rgba(252, 252, 252, 0.1);
 }

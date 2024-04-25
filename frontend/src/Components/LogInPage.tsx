@@ -7,6 +7,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from '@firebase/auth';
+import { Tooltip } from 'antd';
 
 function LogInPage() {
   const navigate = useNavigate();
